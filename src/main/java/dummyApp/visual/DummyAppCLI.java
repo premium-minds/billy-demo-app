@@ -3,8 +3,13 @@ package dummyApp.visual;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.inject.Injector;
+import com.premiumminds.billy.portugal.services.entities.PTBusiness;
+import com.premiumminds.billy.portugal.services.entities.PTCustomer;
+import com.premiumminds.billy.portugal.services.entities.PTProduct;
 
 import dummyApp.app.AppManager;
 import dummyApp.visual.util.CreateBusinessCLI;
@@ -17,10 +22,62 @@ public class DummyAppCLI {
 	BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
 			System.in));
 	AppManager manager;
+	List<PTProduct> products;
+	List<PTCustomer> customers;
+	List<PTBusiness> businesses;
+
+	public DummyAppCLI() {
+		products = new ArrayList<PTProduct>();
+		customers = new ArrayList<PTCustomer>();
+		businesses = new ArrayList<PTBusiness>();
+	}
 
 	public DummyAppCLI(Injector injector) {
 		this.injector = injector;
 		manager = new AppManager(injector);
+		products = new ArrayList<PTProduct>();
+		customers = new ArrayList<PTCustomer>();
+		businesses = new ArrayList<PTBusiness>();
+	}
+	
+	
+	protected List<PTCustomer> getCustomers() {
+		return customers;
+	}
+	
+	protected List<PTProduct> getProducts() {
+		return products;
+	}
+	
+	protected List<PTBusiness> getBusinesses() {
+		return businesses;
+	}
+	
+	protected PTProduct getProductByDescription(String description) {
+		for(PTProduct p : products) {
+			if(p.getDescription().equals(description)) {
+				return p;
+			}
+		}
+		return null;
+	}
+	
+	protected PTBusiness getBusinessByName(String name) {
+		for(PTBusiness b : businesses) {
+			if(b.getName().equals(name)) {
+			return b;
+			}
+		}
+		return null;
+	}
+	
+	protected PTCustomer getCustomerByName(String name) {
+		for(PTCustomer c : customers) {
+			if(c.getName().equals(name)) {
+				return c;
+			}
+		}
+		return null;
 	}
 
 	public void start() {
@@ -45,13 +102,22 @@ public class DummyAppCLI {
 
 				switch (choice) {
 					case 1:
-						createCustomerCLI.createCustomer();
+						PTCustomer c;
+						if ((c = createCustomerCLI.createCustomer()) != null) {
+							customers.add(c);
+						}
 						break;
 					case 2:
-						createBusinessCLI.createBusiness();
+						PTBusiness b;
+						if ((b = createBusinessCLI.createBusiness()) != null) {
+							businesses.add(b);
+						}
 						break;
 					case 3:
-						createProductCLI.createProduct();
+						PTProduct p;
+						if ((p = createProductCLI.createProduct()) != null) {
+							products.add(p);
+						}
 						break;
 					case 4:
 						// Create Invoice

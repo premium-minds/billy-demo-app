@@ -1,5 +1,6 @@
 package dummyApp.app;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,6 +35,7 @@ import com.premiumminds.billy.portugal.services.entities.PTPayment;
 import com.premiumminds.billy.portugal.services.entities.PTProduct;
 import com.premiumminds.billy.portugal.services.entities.PTSimpleInvoice;
 import com.premiumminds.billy.portugal.services.entities.PTSimpleInvoice.CLIENTTYPE;
+import com.premiumminds.billy.portugal.services.export.exceptions.SAFTPTExportException;
 import com.premiumminds.billy.portugal.util.KeyGenerator;
 import com.premiumminds.billy.portugal.util.Taxes;
 
@@ -48,7 +50,7 @@ public class AppManager {
 	private Billy billy;
 	private PTApplication.Builder application;
 	private PTIssuingParams parameters;
-	
+
 	public PTApplication.Builder getApp() {
 		return application;
 	}
@@ -148,25 +150,26 @@ public class AppManager {
 		return application;
 	}
 
-	public PTProductEntity createProduct(String productCode, String description, String unitOfMeasure) {
+	public PTProductEntity createProduct(String productCode,
+			String description, String unitOfMeasure) {
 		Taxes taxes = new Taxes(injector);
 		PTProduct.Builder builder = billyPortugal.products().builder();
 
-		builder.setDescription(description)
-				.setNumberCode(productCode).setProductCode(productCode)
-				.setType(ProductType.GOODS).setUnitOfMeasure(unitOfMeasure)
+		builder.setDescription(description).setNumberCode(productCode)
+				.setProductCode(productCode).setType(ProductType.GOODS)
+				.setUnitOfMeasure(unitOfMeasure)
 				.addTaxUID(taxes.continent().normal().getUID());
-		
+
 		billy.persistProduct(builder);
 
-		return (PTProductEntity)builder.build();
+		return (PTProductEntity) builder.build();
 	}
 
 	public PTInvoiceEntry.Builder createInvoiceEntry(BigDecimal quantity,
 			BigDecimal price, PTProductEntity product) {
 		PTInvoiceEntry.Builder builder = billyPortugal.invoices()
 				.entryBuilder();
-		
+
 		builder.setAmountType(AmountType.WITH_TAX)
 				.setCurrency(Currency.getInstance("EUR"))
 				.setDescription(product.getDescription())
@@ -190,78 +193,77 @@ public class AppManager {
 				.setBusinessUID(business.getUID())
 				.setCustomerUID(customer.getUID()).setDate(new Date())
 				.setSourceId("Source").setSourceBilling(SourceBilling.P);
-		try{
+		try {
 			billy.issueInvoice(builder, parameters);
-		}
-		catch(DocumentIssuingException e){
+		} catch (DocumentIssuingException e) {
 			e.printStackTrace();
 		}
-		
+
 		return (PTInvoiceEntity) builder.build();
 	}
-	
-	public PTSimpleInvoiceEntity createSimpleInvoice(PTInvoiceEntry.Builder entry,
-			PTPayment.Builder payment, PTBusinessEntity business,
-			PTCustomerEntity customer, CLIENTTYPE clientType) {
-		PTSimpleInvoice.Builder builder = billyPortugal.simpleInvoices().builder();
-		
+
+	public PTSimpleInvoiceEntity createSimpleInvoice(
+			PTInvoiceEntry.Builder entry, PTPayment.Builder payment,
+			PTBusinessEntity business, PTCustomerEntity customer,
+			CLIENTTYPE clientType) {
+		PTSimpleInvoice.Builder builder = billyPortugal.simpleInvoices()
+				.builder();
+
 		builder.addEntry(entry).addPayment(payment).setSelfBilled(false)
 				.setCancelled(false).setBilled(false)
 				.setBusinessUID(business.getUID())
 				.setCustomerUID(customer.getUID()).setDate(new Date())
 				.setSourceId("Source").setSourceBilling(SourceBilling.P)
 				.setClientType(clientType);
-		try{
+		try {
 			billy.issueSimpleInvoice(builder, parameters);
-		}
-		catch(DocumentIssuingException e){
+		} catch (DocumentIssuingException e) {
 			e.printStackTrace();
 		}
-		
-		return (PTSimpleInvoiceEntity)builder.build();
+
+		return (PTSimpleInvoiceEntity) builder.build();
 	}
-	
-	public PTCreditNoteEntry.Builder createCreditNoteEntry(PTProductEntity product, String documentUID, BigDecimal quantity, BigDecimal unitAmount, String reason){
-		PTCreditNoteEntry.Builder builder = billyPortugal.creditNotes().entryBuilder();
-		
-		builder
-		.setAmountType(AmountType.WITH_TAX)
-		.setContextUID(billyPortugal.contexts().portugal().allRegions()
+
+	public PTCreditNoteEntry.Builder createCreditNoteEntry(
+			PTProductEntity product, String documentUID, BigDecimal quantity,
+			BigDecimal unitAmount, String reason) {
+		PTCreditNoteEntry.Builder builder = billyPortugal.creditNotes()
+				.entryBuilder();
+
+		builder.setAmountType(AmountType.WITH_TAX)
+				.setContextUID(
+						billyPortugal.contexts().portugal().allRegions()
 								.getUID())
-		.setCurrency(Currency.getInstance("EUR"))
-		.setQuantity(quantity)
-		.setDescription(product.getDescription())
-		.setProductUID(product.getUID())
-		.setReason(reason)
-		.setReferenceUID(new UID(documentUID))
-		.setUnitAmount(AmountType.WITH_TAX, unitAmount)
-		.setUnitOfMeasure(product.getUnitOfMeasure());
-		
+				.setCurrency(Currency.getInstance("EUR")).setQuantity(quantity)
+				.setDescription(product.getDescription())
+				.setProductUID(product.getUID()).setReason(reason)
+				.setReferenceUID(new UID(documentUID))
+				.setUnitAmount(AmountType.WITH_TAX, unitAmount)
+				.setUnitOfMeasure(product.getUnitOfMeasure());
+
 		return builder;
 	}
-	
-	public PTCreditNoteEntity createCreditNote(PTCreditNoteEntry.Builder entry, PTPayment.Builder payment, PTBusinessEntity business, PTCustomerEntity customer){
+
+	public PTCreditNoteEntity createCreditNote(PTCreditNoteEntry.Builder entry,
+			PTPayment.Builder payment, PTBusinessEntity business,
+			PTCustomerEntity customer) {
 		PTCreditNote.Builder builder = billyPortugal.creditNotes().builder();
-		
-		builder.addEntry(entry)
-		.addPayment(payment)
-		.setBilled(false)
-		.setBusinessUID(business.getUID())
-		.setCancelled(false)
-		.setCurrency(Currency.getInstance("EUR"))
-		.setCustomerUID(customer.getUID())
-		.setDate(new Date())
-		.setSelfBilled(false)
-		.setSourceBilling(SourceBilling.P)
-		.setSourceId("SOURCE");
-		try{
-		billy.issueCreditNote(builder, parameters);
-		}
-		catch(DocumentIssuingException e){
+
+		builder.addEntry(entry).addPayment(payment).setBilled(false)
+				.setBusinessUID(business.getUID()).setCancelled(false)
+				.setCurrency(Currency.getInstance("EUR"))
+				.setCustomerUID(customer.getUID()).setDate(new Date())
+				.setSelfBilled(false).setSourceBilling(SourceBilling.P)
+				.setSourceId("SOURCE");
+		try {
+			billy.issueCreditNote(builder, parameters);
+		} catch (DocumentIssuingException e) {
 			e.printStackTrace();
 		}
 		return (PTCreditNoteEntity) builder.build();
 	}
-	
-	
-}
+
+	public void exportSaft(PTBusinessEntity business, Date from, Date to) throws IOException, SAFTPTExportException{
+		   billy.exportSaft(business.getApplications().get(0).getUID(), business.getUID(), from, to);
+		  }
+	}

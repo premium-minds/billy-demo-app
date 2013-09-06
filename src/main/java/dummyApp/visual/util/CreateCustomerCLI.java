@@ -20,7 +20,7 @@ public class CreateCustomerCLI {
 	}
 
 	@SuppressWarnings("finally")
-	public void createCustomer() {
+	public PTCustomer createCustomer() {
 		String name;
 		String taxNumber;
 		String street;
@@ -73,13 +73,13 @@ public class CreateCustomerCLI {
 				System.out.println("Something went wrong");
 			}
 			System.out.println("Customer: " + customer.getName() + " created.");
-
+			return customer;
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			return;
+			return null;
 		}
 
 	}

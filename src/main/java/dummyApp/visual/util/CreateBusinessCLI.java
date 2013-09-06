@@ -19,7 +19,7 @@ public class CreateBusinessCLI {
 	}
 
 	@SuppressWarnings("finally")
-	public void createBusiness() {
+	public PTBusiness createBusiness() {
 
 		String name, taxNumber, street, number, postalCode, city, telephone, app;
 
@@ -75,11 +75,12 @@ public class CreateBusinessCLI {
 				System.out.println("Something went wrong");
 			}
 			System.out.println("Business: " + business.getName() + " created.");
+			return business;
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			return;
+			return null;
 		}
 
 	}

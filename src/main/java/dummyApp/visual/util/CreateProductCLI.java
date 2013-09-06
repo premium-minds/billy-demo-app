@@ -19,7 +19,7 @@ public class CreateProductCLI {
 	}
 
 	@SuppressWarnings("finally")
-	public void createProduct() {
+	public PTProduct createProduct() {
 		String description, productCode, unitOfMeasure;
 
 		try {
@@ -48,13 +48,14 @@ public class CreateProductCLI {
 			}
 			System.out.println("Product: " + product.getDescription()
 					+ " created.");
+			return product;
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			return;
+			return null;
 		}
 
 	}
