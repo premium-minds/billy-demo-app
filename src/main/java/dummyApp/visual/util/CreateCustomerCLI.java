@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+<<<<<<< HEAD
 import com.google.inject.Injector;
 import com.premiumminds.billy.portugal.services.entities.PTCustomer;
 
@@ -81,7 +82,6 @@ public class CreateCustomerCLI {
 		} finally {
 			return;
 		}
-
 	}
 
 }
