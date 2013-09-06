@@ -4,14 +4,29 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.google.inject.Injector;
+
+import dummyApp.app.AppManager;
+import dummyApp.visual.util.CreateBusinessCLI;
 import dummyApp.visual.util.CreateCustomerCLI;
+import dummyApp.visual.util.CreateProductCLI;
 
 public class DummyAppCLI {
 
+	Injector injector;
+	BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
+			System.in));
+	AppManager manager;
+
+	public DummyAppCLI(Injector injector) {
+		this.injector = injector;
+		manager = new AppManager(injector);
+	}
+
 	public void start() {
-		BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
-				System.in));
-		CreateCustomerCLI createCustomerCLI = new CreateCustomerCLI();
+		CreateCustomerCLI createCustomerCLI = new CreateCustomerCLI(manager);
+		CreateBusinessCLI createBusinessCLI = new CreateBusinessCLI(manager);
+		CreateProductCLI createProductCLI = new CreateProductCLI(manager);
 
 		while (true) {
 			System.out.println("Press number key and return to:");
@@ -33,10 +48,10 @@ public class DummyAppCLI {
 						createCustomerCLI.createCustomer();
 						break;
 					case 2:
-						// Create business
+						createBusinessCLI.createBusiness();
 						break;
 					case 3:
-						// Create product
+						createProductCLI.createProduct();
 						break;
 					case 4:
 						// Create Invoice

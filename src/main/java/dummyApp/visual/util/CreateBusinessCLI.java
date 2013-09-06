@@ -1,34 +1,26 @@
 package dummyApp.visual.util;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.google.inject.Injector;
-import com.premiumminds.billy.portugal.services.entities.PTCustomer;
+import com.premiumminds.billy.portugal.services.entities.PTBusiness;
 
 import dummyApp.app.AppManager;
 
+public class CreateBusinessCLI {
 
-public class CreateCustomerCLI {
-	
 	BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
 			System.in));
 	AppManager manager;
-	
-	public CreateCustomerCLI(AppManager manager) {
+
+	public CreateBusinessCLI(AppManager manager) {
 		this.manager = manager;
 	}
-	
+
 	@SuppressWarnings("finally")
-	public void createCustomer() {
-		String name;
-		String taxNumber;
-		String street;
-		String number;
-		String postalCode;
-		String city;
-		String telephone;
+	public void createBusiness() {
+		
+		String name, taxNumber, street, number, postalCode, city, telephone;
 		
 		try {
 			System.out.println("Name:");
@@ -46,23 +38,17 @@ public class CreateCustomerCLI {
 			System.out.println("Telephone:");
 			telephone = bufferReader.readLine();
 			
-			// TODO check nulls
-			
-			PTCustomer customer = manager.createCustomer(name, taxNumber, street, number, postalCode, city, telephone);
-			if(customer == null) {
+			PTBusiness business = manager.createBusiness(name, taxNumber, street, number, postalCode, city, telephone);
+			if(business == null) {
 				System.out.println("Something went wrong");
 			}
-			System.out.println("Customer: " + customer.getName() + " created.");
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch(Exception e) {
+			System.out.println("Business: " + business.getName() + " created.");
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			return;
 		}
-		
-		
-	}
 
+	}
 }
