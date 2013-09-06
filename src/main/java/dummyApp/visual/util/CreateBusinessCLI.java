@@ -3,6 +3,7 @@ package dummyApp.visual.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import com.premiumminds.billy.portugal.services.entities.PTApplication;
 import com.premiumminds.billy.portugal.services.entities.PTBusiness;
 
 import dummyApp.app.AppManager;
@@ -19,9 +20,9 @@ public class CreateBusinessCLI {
 
 	@SuppressWarnings("finally")
 	public void createBusiness() {
-		
-		String name, taxNumber, street, number, postalCode, city, telephone;
-		
+
+		String name, taxNumber, street, number, postalCode, city, telephone, app;
+
 		try {
 			System.out.println("Name:");
 			name = bufferReader.readLine();
@@ -37,9 +38,40 @@ public class CreateBusinessCLI {
 			city = bufferReader.readLine();
 			System.out.println("Telephone:");
 			telephone = bufferReader.readLine();
-			
-			PTBusiness business = manager.createBusiness(name, taxNumber, street, number, postalCode, city, telephone);
-			if(business == null) {
+			System.out.println("Create App:");
+			app = bufferReader.readLine();
+			PTApplication.Builder appbuilder;
+
+			if (name.equals("")) {
+				name = "Desconhecido";
+			}
+			if (taxNumber.equals("")) {
+				taxNumber = "123456789";
+			}
+			if (street.equals("")) {
+				street = "Desconhecido";
+			}
+			if (number.equals("")) {
+				number = "Desconhecido";
+			}
+			if (postalCode.equals("")) {
+				postalCode = "Desconhecido";
+			}
+			if (city.equals("")) {
+				city = "Desconhecido";
+			}
+			if (telephone.equals("")) {
+				telephone = "Desconhecido";
+			}
+			if (app.equals("y")) {
+				appbuilder = manager.createApplication();
+			} else {
+				appbuilder = manager.getApp();
+			}
+
+			PTBusiness business = manager.createBusiness(appbuilder, name, taxNumber,
+					street, number, postalCode, city, telephone);
+			if (business == null) {
 				System.out.println("Something went wrong");
 			}
 			System.out.println("Business: " + business.getName() + " created.");

@@ -40,6 +40,7 @@ import com.premiumminds.billy.portugal.util.Taxes;
 import dummyApp.persistence.Billy;
 
 public class AppManager {
+
 	public static final String COUNTRY_CODE = "PT";
 	public static final String COUNTRY = "Portugal";
 	private Injector injector;
@@ -47,13 +48,17 @@ public class AppManager {
 	private Billy billy;
 	private PTApplication.Builder application;
 	private PTIssuingParams parameters;
+	
+	public PTApplication.Builder getApp() {
+		return application;
+	}
 
 	public AppManager(Injector injector) {
 		this.injector = injector;
 		billyPortugal = new BillyPortugal(this.injector);
 		billy = new Billy(this.injector, billyPortugal);
 		application = createApplication();
-		
+
 		KeyGenerator generator = new KeyGenerator(App.PRIVATE_KEY_DIR);
 		parameters = new PTIssuingParamsImpl();
 		parameters.setPrivateKey(generator.getPrivateKey());
@@ -83,6 +88,13 @@ public class AppManager {
 	public PTBusinessEntity createBusiness(String name,
 			String taxRegistrationNumber, String street, String number,
 			String postalCode, String city, String telephone) {
+		return createBusiness(application, name, taxRegistrationNumber, street,
+				number, postalCode, city, telephone);
+	}
+
+	public PTBusinessEntity createBusiness(PTApplication.Builder application,
+			String name, String taxRegistrationNumber, String street,
+			String number, String postalCode, String city, String telephone) {
 		PTBusiness.Builder builder = billyPortugal.businesses().builder();
 		PTContact.Builder contact = createContact(name, telephone);
 		PTAddress.Builder address = createAddress(street, number, postalCode,
@@ -249,10 +261,6 @@ public class AppManager {
 			e.printStackTrace();
 		}
 		return (PTCreditNoteEntity) builder.build();
-	}
-	
-	public void exportSaft(PTBusinessEntity business, Date from, Date to){
-		billy.exportSaft(business.getApplications().get(0).getUID(), businessUID, from, to)
 	}
 	
 	
