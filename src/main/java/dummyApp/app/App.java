@@ -57,6 +57,7 @@ public class App {
 				new PortugalPersistenceDependencyModule());
 		injector.getInstance(PortugalDependencyModule.Initializer.class);
 		injector.getInstance(PortugalPersistenceDependencyModule.Initializer.class);
+		PortugalBootstrap.execute(injector);
 		
 		DummyAppCLI cli = new DummyAppCLI(injector);
 		cli.start();

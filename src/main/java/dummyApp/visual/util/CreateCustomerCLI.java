@@ -9,17 +9,16 @@ import com.premiumminds.billy.portugal.services.entities.PTCustomer;
 
 import dummyApp.app.AppManager;
 
-
 public class CreateCustomerCLI {
-	
+
 	BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
 			System.in));
 	AppManager manager;
-	
+
 	public CreateCustomerCLI(AppManager manager) {
 		this.manager = manager;
 	}
-	
+
 	@SuppressWarnings("finally")
 	public void createCustomer() {
 		String name;
@@ -29,7 +28,7 @@ public class CreateCustomerCLI {
 		String postalCode;
 		String city;
 		String telephone;
-		
+
 		try {
 			System.out.println("Name:");
 			name = bufferReader.readLine();
@@ -45,24 +44,44 @@ public class CreateCustomerCLI {
 			city = bufferReader.readLine();
 			System.out.println("Telephone:");
 			telephone = bufferReader.readLine();
-			
-			// TODO check nulls
-			
-			PTCustomer customer = manager.createCustomer(name, taxNumber, street, number, postalCode, city, telephone);
-			if(customer == null) {
+
+			if (name.equals("")) {
+				name = "Desconhecido";
+			}
+			if (taxNumber.equals("")) {
+				taxNumber = "123456789";
+			}
+			if (street.equals("")) {
+				street = "Desconhecido";
+			}
+			if (number.equals("")) {
+				number = "Desconhecido";
+			}
+			if (postalCode.equals("")) {
+				postalCode = "Desconhecido";
+			}
+			if (city.equals("")) {
+				city = "Desconhecido";
+			}
+			if ( telephone.equals("")) {
+				telephone = "Desconhecido";
+			}
+
+			PTCustomer customer = manager.createCustomer(name, taxNumber,
+					street, number, postalCode, city, telephone);
+			if (customer == null) {
 				System.out.println("Something went wrong");
 			}
 			System.out.println("Customer: " + customer.getName() + " created.");
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			return;
 		}
-		
-		
+
 	}
 
 }
