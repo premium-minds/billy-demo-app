@@ -58,7 +58,7 @@ public class App {
 		injector.getInstance(PortugalDependencyModule.Initializer.class);
 		injector.getInstance(PortugalPersistenceDependencyModule.Initializer.class);
 		
-		DummyAppCLI cli = new DummyAppCLI();
+		DummyAppCLI cli = new DummyAppCLI(injector);
 		cli.start();
 
 //		PTIssuingParams parameters;
