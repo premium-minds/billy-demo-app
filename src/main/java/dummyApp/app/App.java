@@ -1,4 +1,4 @@
-package DummyApp.DummyApp;
+package dummyApp.app;
 
 import java.io.IOException;
 import java.math.BigDecimal;
