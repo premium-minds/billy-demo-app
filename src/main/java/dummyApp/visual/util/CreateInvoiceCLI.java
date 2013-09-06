@@ -22,6 +22,7 @@ public class CreateInvoiceCLI extends DummyAppCLI {
 		this.manager = manager;
 	}
 
+	@SuppressWarnings("finally")
 	public void createInvoice() {
 		PTProductEntity product;
 		String productName;
@@ -52,9 +53,9 @@ public class CreateInvoiceCLI extends DummyAppCLI {
 		
 
 		PTInvoiceEntry.Builder entry = manager.createInvoiceEntry(quantity, price, product);
-		PTPayment.Builder payment
-		
-		manager.createInvoice(entry, payment, business, customer);
+//		PTPayment.Builder payment = manager.createPayment()
+//		
+//		manager.createInvoice(entry, payment, business, customer);
 		
 		} catch (Exception e) {
 			e.printStackTrace();

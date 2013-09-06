@@ -20,6 +20,7 @@ public class CreateProductCLI {
 
 	@SuppressWarnings("finally")
 	public PTProduct createProduct() {
+
 		String description, productCode, unitOfMeasure;
 
 		try {

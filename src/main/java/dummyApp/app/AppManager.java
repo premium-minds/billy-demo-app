@@ -263,7 +263,9 @@ public class AppManager {
 		return (PTCreditNoteEntity) builder.build();
 	}
 
-	public void exportSaft(PTBusinessEntity business, Date from, Date to) throws IOException, SAFTPTExportException{
-		   billy.exportSaft(business.getApplications().get(0).getUID(), business.getUID(), from, to);
-		  }
+	public void exportSaft(PTBusinessEntity business, Date from, Date to)
+			throws IOException, SAFTPTExportException {
+		billy.exportSaft(business.getApplications().get(0).getUID(),
+				business.getUID(), from, to);
 	}
+}
