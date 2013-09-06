@@ -251,5 +251,9 @@ public class AppManager {
 		return (PTCreditNoteEntity) builder.build();
 	}
 	
+	public void exportSaft(PTBusinessEntity business, Date from, Date to){
+		billy.exportSaft(business.getApplications().get(0).getUID(), businessUID, from, to)
+	}
+	
 	
 }
