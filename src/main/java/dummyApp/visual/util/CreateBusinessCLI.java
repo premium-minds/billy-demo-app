@@ -69,8 +69,8 @@ public class CreateBusinessCLI {
 				appbuilder = manager.getApp();
 			}
 
-			PTBusiness business = manager.createBusiness(appbuilder, name, taxNumber,
-					street, number, postalCode, city, telephone);
+			PTBusiness business = manager.createBusiness(appbuilder, name,
+					taxNumber, street, number, postalCode, city, telephone);
 			if (business == null) {
 				System.out.println("Something went wrong");
 			}
@@ -79,9 +79,7 @@ public class CreateBusinessCLI {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			return null;
 		}
-
+		return null;
 	}
 }

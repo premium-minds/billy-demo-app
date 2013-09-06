@@ -14,7 +14,9 @@ import com.premiumminds.billy.portugal.services.entities.PTProduct;
 import dummyApp.app.AppManager;
 import dummyApp.visual.util.CreateBusinessCLI;
 import dummyApp.visual.util.CreateCustomerCLI;
+import dummyApp.visual.util.CreateInvoiceCLI;
 import dummyApp.visual.util.CreateProductCLI;
+import dummyApp.visual.util.ExportSAFT;
 
 public class DummyAppCLI {
 
@@ -84,6 +86,8 @@ public class DummyAppCLI {
 		CreateCustomerCLI createCustomerCLI = new CreateCustomerCLI(manager);
 		CreateBusinessCLI createBusinessCLI = new CreateBusinessCLI(manager);
 		CreateProductCLI createProductCLI = new CreateProductCLI(manager);
+		CreateInvoiceCLI createInvoiceCLI = new CreateInvoiceCLI(manager);
+		ExportSAFT exportSAFT = new ExportSAFT(manager);
 
 		while (true) {
 			System.out.println("Press number key and return to:");
@@ -120,7 +124,7 @@ public class DummyAppCLI {
 						}
 						break;
 					case 4:
-						// Create Invoice
+						createInvoiceCLI.createInvoice();
 						break;
 					case 5:
 						// Create Simple Invoice
@@ -129,7 +133,7 @@ public class DummyAppCLI {
 						// Create Credit Note
 						break;
 					case 7:
-						// Export SAFT
+						exportSAFT.exportSAFT();
 						break;
 					case 8:
 						// Export PDF

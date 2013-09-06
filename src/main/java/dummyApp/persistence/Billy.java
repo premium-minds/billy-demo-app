@@ -67,7 +67,7 @@ public class Billy {
 
 	public void exportSaft(UID appUID, UID businessUID, Date from, Date to)
 			throws IOException, SAFTPTExportException {
-		billyPortugal.saft().export(appUID, businessUID, "12-NrCertificado",
+		billyPortugal.saft().export(appUID, businessUID, "12",
 				from, to);
 	}
 

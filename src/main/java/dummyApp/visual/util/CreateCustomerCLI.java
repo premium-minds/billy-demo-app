@@ -63,7 +63,7 @@ public class CreateCustomerCLI {
 			if (city.equals("")) {
 				city = "Desconhecido";
 			}
-			if ( telephone.equals("")) {
+			if (telephone.equals("")) {
 				telephone = "Desconhecido";
 			}
 
@@ -78,9 +78,8 @@ public class CreateCustomerCLI {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			return null;
 		}
+		return null;
 	}
 
 }

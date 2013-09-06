@@ -55,9 +55,8 @@ public class CreateProductCLI {
 			e.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			return null;
 		}
+		return null;
 
 	}
 }
