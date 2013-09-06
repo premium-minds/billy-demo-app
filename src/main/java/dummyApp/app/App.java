@@ -38,6 +38,9 @@ import com.premiumminds.billy.portugal.util.KeyGenerator;
 import com.premiumminds.billy.portugal.util.PaymentMechanism;
 import com.premiumminds.billy.portugal.util.Taxes;
 
+import dummyApp.persistence.Billy;
+import dummyApp.visual.DummyAppCLI;
+
 /**
  * Hello world!
  * 
@@ -54,45 +57,48 @@ public class App {
 				new PortugalPersistenceDependencyModule());
 		injector.getInstance(PortugalDependencyModule.Initializer.class);
 		injector.getInstance(PortugalPersistenceDependencyModule.Initializer.class);
-
-		PTIssuingParams parameters;
-		KeyGenerator generator = new KeyGenerator(App.PRIVATE_KEY_DIR);
-		parameters = new PTIssuingParamsImpl();
-		parameters.setPrivateKey(generator.getPrivateKey());
-		parameters.setPublicKey(generator.getPublicKey());
-		parameters.setPrivateKeyVersion("1");
-		parameters.setEACCode("31400");
-		parameters.setInvoiceSeries("DEFAULT");
-		billyPortugal = new BillyPortugal(injector);
-		PortugalBootstrap.execute(injector);
-		PTAddress.Builder address = createAddress();
-		PTContact.Builder contact = createContact();
-		PTApplication.Builder application = createApplication(address, contact);
 		
-		PTCustomer.Builder customer = createCustomer(address, contact);
-		customer.build().getUID();
-		billyPortugal.customers().persistence().create(customer);
+		DummyAppCLI cli = new DummyAppCLI();
+		cli.start();
 
-		PTBusiness.Builder business = createBussiness(application, address, contact);
-		business.build().getUID();
-		billyPortugal.businesses().persistence().create(business);
-
-		PTProduct.Builder product = createProduct();
-		product.build().getUID();
-		billyPortugal.products().persistence().create(product);
-		PTInvoiceEntry.Builder entry = createInvoiceEntry((PTProductEntity) product
-				.build());
-
-		PTPayment.Builder payment = createPayment();
-
-		PTInvoice.Builder invoice = createInvoice(entry, payment,
-				(PTBusinessEntity) business.build(),
-				(PTCustomerEntity) customer.build());
-		billyPortugal.invoices().issue(invoice, parameters);
-		Calendar calendar = Calendar.getInstance();
-		calendar.set(2013, 1, 1);
-		
-		billyPortugal.saft().export(application.build().getUID(), business.build().getUID(), "123", calendar.getTime(), new Date());
+//		PTIssuingParams parameters;
+//		KeyGenerator generator = new KeyGenerator(App.PRIVATE_KEY_DIR);
+//		parameters = new PTIssuingParamsImpl();
+//		parameters.setPrivateKey(generator.getPrivateKey());
+//		parameters.setPublicKey(generator.getPublicKey());
+//		parameters.setPrivateKeyVersion("1");
+//		parameters.setEACCode("31400");
+//		parameters.setInvoiceSeries("DEFAULT");
+//		billyPortugal = new BillyPortugal(injector);
+//		PortugalBootstrap.execute(injector);
+//		PTAddress.Builder address = createAddress();
+//		PTContact.Builder contact = createContact();
+//		PTApplication.Builder application = createApplication(address, contact);
+//		
+//		PTCustomer.Builder customer = createCustomer(address, contact);
+//		customer.build().getUID();
+//		billyPortugal.customers().persistence().create(customer);
+//
+//		PTBusiness.Builder business = createBussiness(application, address, contact);
+//		business.build().getUID();
+//		billyPortugal.businesses().persistence().create(business);
+//
+//		PTProduct.Builder product = createProduct();
+//		product.build().getUID();
+//		billyPortugal.products().persistence().create(product);
+//		PTInvoiceEntry.Builder entry = createInvoiceEntry((PTProductEntity) product
+//				.build());
+//
+//		PTPayment.Builder payment = createPayment();
+//
+//		PTInvoice.Builder invoice = createInvoice(entry, payment,
+//				(PTBusinessEntity) business.build(),
+//				(PTCustomerEntity) customer.build());
+//		billyPortugal.invoices().issue(invoice, parameters);
+//		Calendar calendar = Calendar.getInstance();
+//		calendar.set(2013, 1, 1);
+//		
+//		billyPortugal.saft().export(application.build().getUID(), business.build().getUID(), "123", calendar.getTime(), new Date());
 
 	}
 
