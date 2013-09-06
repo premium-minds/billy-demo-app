@@ -1,5 +1,6 @@
 package dummyApp.app;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -34,27 +35,27 @@ import com.premiumminds.billy.portugal.services.entities.PTPayment;
 import com.premiumminds.billy.portugal.services.entities.PTProduct;
 import com.premiumminds.billy.portugal.services.entities.PTSimpleInvoice;
 import com.premiumminds.billy.portugal.services.entities.PTSimpleInvoice.CLIENTTYPE;
+import com.premiumminds.billy.portugal.services.export.exceptions.SAFTPTExportException;
 import com.premiumminds.billy.portugal.util.KeyGenerator;
 import com.premiumminds.billy.portugal.util.Taxes;
 
 import dummyApp.persistence.Billy;
 
 public class AppManager {
+	public static final String PRIVATE_KEY_DIR = "src/main/resources/private.pem";
 	public static final String COUNTRY_CODE = "PT";
 	public static final String COUNTRY = "Portugal";
 	private Injector injector;
 	private BillyPortugal billyPortugal;
 	private Billy billy;
-	private PTApplication.Builder application;
 	private PTIssuingParams parameters;
 
 	public AppManager(Injector injector) {
 		this.injector = injector;
 		billyPortugal = new BillyPortugal(this.injector);
 		billy = new Billy(this.injector, billyPortugal);
-		application = createApplication();
 		
-		KeyGenerator generator = new KeyGenerator(App.PRIVATE_KEY_DIR);
+		KeyGenerator generator = new KeyGenerator(AppManager.PRIVATE_KEY_DIR);
 		parameters = new PTIssuingParamsImpl();
 		parameters.setPrivateKey(generator.getPrivateKey());
 		parameters.setPublicKey(generator.getPublicKey());
@@ -87,7 +88,7 @@ public class AppManager {
 		PTContact.Builder contact = createContact(name, telephone);
 		PTAddress.Builder address = createAddress(street, number, postalCode,
 				city);
-		builder.addApplication(application).addContact(contact, true)
+		builder.addApplication(createApplication()).addContact(contact, true)
 				.setAddress(address).setBillingAddress(address)
 				.setMainContactUID(contact.build().getUID()).setName(name)
 				.setCommercialName(name)
@@ -251,8 +252,8 @@ public class AppManager {
 		return (PTCreditNoteEntity) builder.build();
 	}
 	
-	public void exportSaft(PTBusinessEntity business, Date from, Date to){
-		billy.exportSaft(business.getApplications().get(0).getUID(), businessUID, from, to)
+	public void exportSaft(PTBusinessEntity business, Date from, Date to) throws IOException, SAFTPTExportException{
+		billy.exportSaft(business.getApplications().get(0).getUID(), business.getUID(), from, to);
 	}
 	
 	
