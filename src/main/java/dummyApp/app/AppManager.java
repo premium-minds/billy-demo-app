@@ -13,6 +13,7 @@ import com.premiumminds.billy.core.services.builders.GenericInvoiceEntryBuilder.
 import com.premiumminds.billy.core.services.entities.Product.ProductType;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
 import com.premiumminds.billy.portugal.BillyPortugal;
+import com.premiumminds.billy.portugal.persistence.dao.DAOPTPayment;
 import com.premiumminds.billy.portugal.persistence.entities.PTBusinessEntity;
 import com.premiumminds.billy.portugal.persistence.entities.PTCreditNoteEntity;
 import com.premiumminds.billy.portugal.persistence.entities.PTCustomerEntity;
@@ -37,6 +38,7 @@ import com.premiumminds.billy.portugal.services.entities.PTSimpleInvoice;
 import com.premiumminds.billy.portugal.services.entities.PTSimpleInvoice.CLIENTTYPE;
 import com.premiumminds.billy.portugal.services.export.exceptions.SAFTPTExportException;
 import com.premiumminds.billy.portugal.util.KeyGenerator;
+import com.premiumminds.billy.portugal.util.PaymentMechanism;
 import com.premiumminds.billy.portugal.util.Taxes;
 
 import dummyApp.persistence.Billy;
@@ -250,6 +252,16 @@ public class AppManager {
 			e.printStackTrace();
 		}
 		return (PTCreditNoteEntity) builder.build();
+	}
+	
+	public PTPayment.Builder createPayment(BigDecimal amount) {
+		PTPayment.Builder payment = new PTPayment.Builder(
+				injector.getInstance(DAOPTPayment.class));
+		payment.setPaymentAmount(amount)
+				.setPaymentDate(new Date())
+				.setPaymentMethod(PaymentMechanism.CASH);
+
+		return payment;
 	}
 	
 	public void exportSaft(PTBusinessEntity business, Date from, Date to) throws IOException, SAFTPTExportException{
