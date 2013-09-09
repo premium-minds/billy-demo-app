@@ -42,6 +42,7 @@ import com.premiumminds.billy.portugal.util.PaymentMechanism;
 import com.premiumminds.billy.portugal.util.Taxes;
 
 import dummyApp.persistence.Billy;
+import dummyApp.visual.DummyAppCLI;
 
 public class AppManager {
 
