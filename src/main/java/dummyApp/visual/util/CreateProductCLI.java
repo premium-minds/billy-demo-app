@@ -18,7 +18,6 @@ public class CreateProductCLI {
 		this.manager = manager;
 	}
 
-	@SuppressWarnings("finally")
 	public PTProduct createProduct() {
 
 		String description, productCode, unitOfMeasure;

@@ -14,7 +14,7 @@ import com.premiumminds.billy.portugal.services.entities.PTPayment;
 import dummyApp.app.AppManager;
 import dummyApp.visual.DummyAppCLI;
 
-public class CreateInvoiceCLI extends DummyAppCLI {
+public class CreateInvoiceCLI {
 
 	BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
 			System.in));
@@ -36,7 +36,7 @@ public class CreateInvoiceCLI extends DummyAppCLI {
 			System.out.println("Business Name:");
 			businessName = bufferReader.readLine();
 
-			business = (PTBusinessEntity) getBusinessByName(businessName);
+			business = (PTBusinessEntity) manager.getAppCLI().getBusinessByName(businessName);
 
 			if (business == null) {
 				System.out.println("Business not found, create new? (y/n)");
@@ -44,7 +44,7 @@ public class CreateInvoiceCLI extends DummyAppCLI {
 				if (answer.toLowerCase().contains("y")) {
 					business = (PTBusinessEntity) new CreateBusinessCLI(manager)
 							.createBusiness();
-					getBusinesses().add(business);
+					manager.getAppCLI().getBusinesses().add(business);
 				} else {
 					return;
 				}
@@ -53,7 +53,7 @@ public class CreateInvoiceCLI extends DummyAppCLI {
 			System.out.println("Customer Name:");
 			customerName = bufferReader.readLine();
 
-			customer = (PTCustomerEntity) getCustomerByName(customerName);
+			customer = (PTCustomerEntity) manager.getAppCLI().getCustomerByName(customerName);
 
 			if (customer == null) {
 				System.out.println("Customer not found, create new? (y/n)");
@@ -61,7 +61,7 @@ public class CreateInvoiceCLI extends DummyAppCLI {
 				if (answer.toLowerCase().contains("y")) {
 					customer = (PTCustomerEntity) new CreateCustomerCLI(manager)
 							.createCustomer();
-					getCustomers().add(customer);
+					manager.getAppCLI().getCustomers().add(customer);
 				} else {
 					return;
 				}
@@ -70,7 +70,7 @@ public class CreateInvoiceCLI extends DummyAppCLI {
 			System.out.println("Product description:");
 			productName = bufferReader.readLine();
 
-			product = (PTProductEntity) getProductByDescription(productName);
+			product = (PTProductEntity) manager.getAppCLI().getProductByDescription(productName);
 
 			if (product == null) {
 				System.out.println("Product not found, create new? (y/n)");
@@ -78,7 +78,7 @@ public class CreateInvoiceCLI extends DummyAppCLI {
 				if (answer.toLowerCase().contains("y")) {
 					product = (PTProductEntity) new CreateProductCLI(manager)
 							.createProduct();
-					getProducts().add(product);
+					manager.getAppCLI().getProducts().add(product);
 				} else {
 					return;
 				}

@@ -40,22 +40,23 @@ public class DummyAppCLI {
 		products = new ArrayList<PTProduct>();
 		customers = new ArrayList<PTCustomer>();
 		businesses = new ArrayList<PTBusiness>();
+		manager.setAppCLI(this);
 	}
 	
 	
-	protected List<PTCustomer> getCustomers() {
+	public List<PTCustomer> getCustomers() {
 		return customers;
 	}
 	
-	protected List<PTProduct> getProducts() {
+	public List<PTProduct> getProducts() {
 		return products;
 	}
 	
-	protected List<PTBusiness> getBusinesses() {
+	public List<PTBusiness> getBusinesses() {
 		return businesses;
 	}
 	
-	protected PTProduct getProductByDescription(String description) {
+	public PTProduct getProductByDescription(String description) {
 		for(PTProduct p : products) {
 			if(p.getDescription().equals(description)) {
 				return p;
@@ -64,7 +65,7 @@ public class DummyAppCLI {
 		return null;
 	}
 	
-	protected PTBusiness getBusinessByName(String name) {
+	public PTBusiness getBusinessByName(String name) {
 		for(PTBusiness b : businesses) {
 			if(b.getName().equals(name)) {
 			return b;
@@ -73,7 +74,7 @@ public class DummyAppCLI {
 		return null;
 	}
 	
-	protected PTCustomer getCustomerByName(String name) {
+	public PTCustomer getCustomerByName(String name) {
 		for(PTCustomer c : customers) {
 			if(c.getName().equals(name)) {
 				return c;

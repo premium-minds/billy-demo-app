@@ -12,7 +12,7 @@ import com.premiumminds.billy.portugal.services.export.exceptions.SAFTPTExportEx
 import dummyApp.app.AppManager;
 import dummyApp.visual.DummyAppCLI;
 
-public class ExportSAFT extends DummyAppCLI {
+public class ExportSAFT {
 
 	BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
 			System.in));
@@ -30,7 +30,7 @@ public class ExportSAFT extends DummyAppCLI {
 			System.out.println("Business Name:");
 			businessName = bufferReader.readLine();
 
-			business = (PTBusinessEntity) getBusinessByName(businessName);
+			business = (PTBusinessEntity) manager.getAppCLI().getBusinessByName(businessName);
 
 			if (business == null) {
 				System.out.println("Business not found, create new?");
@@ -38,7 +38,7 @@ public class ExportSAFT extends DummyAppCLI {
 				if (answer.toLowerCase().contains("y")) {
 					business = (PTBusinessEntity) new CreateBusinessCLI(manager)
 							.createBusiness();
-					getBusinesses().add(business);
+					manager.getAppCLI().getBusinesses().add(business);
 				} else {
 					return;
 				}

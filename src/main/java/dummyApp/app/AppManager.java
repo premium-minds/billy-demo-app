@@ -42,6 +42,7 @@ import com.premiumminds.billy.portugal.util.PaymentMechanism;
 import com.premiumminds.billy.portugal.util.Taxes;
 
 import dummyApp.persistence.Billy;
+import dummyApp.visual.DummyAppCLI;
 
 public class AppManager {
 
@@ -52,6 +53,7 @@ public class AppManager {
 	private Billy billy;
 	private PTApplication.Builder application;
 	private PTIssuingParams parameters;
+	private DummyAppCLI appCLI;
 
 	public PTApplication.Builder getApp() {
 		return application;
@@ -70,6 +72,16 @@ public class AppManager {
 		parameters.setPrivateKeyVersion("1");
 		parameters.setEACCode("31400");
 		parameters.setInvoiceSeries("DEFAULT");
+	}
+
+	
+	public DummyAppCLI getAppCLI() {
+		return appCLI;
+	}
+
+	
+	public void setAppCLI(DummyAppCLI appCLI) {
+		this.appCLI = appCLI;
 	}
 
 	public PTCustomerEntity createCustomer(String name,
