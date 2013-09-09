@@ -98,6 +98,11 @@ public class CreateInvoiceCLI {
 				System.out.println("Something went wrong");
 			}
 			System.out.println("Invoice: " + invoice.getNumber() + " created.");
+			System.out.println("Do you want to print a PDF? (y/n)");
+			String answer = bufferReader.readLine();
+			if (answer.toLowerCase().contains("y")) {
+				manager.exportInvoicePDF(invoice.getUID());
+			}
 			return invoice;
 
 		} catch (Exception e) {

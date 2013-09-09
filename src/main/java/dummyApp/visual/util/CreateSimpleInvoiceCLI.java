@@ -109,6 +109,11 @@ public class CreateSimpleInvoiceCLI {
 				System.out.println("Something went wrong");
 			}
 			System.out.println("Simple Invoice: " + simpleInvoice.getNumber() + " created.");
+			System.out.println("Do you want to print a PDF? (y/n)");
+			String answer = bufferReader.readLine();
+			if (answer.toLowerCase().contains("y")) {
+				manager.exportInvoicePDF(simpleInvoice.getUID());
+			}
 			return simpleInvoice;
 
 		} catch (Exception e) {

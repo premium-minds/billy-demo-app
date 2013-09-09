@@ -25,7 +25,7 @@ public class CreateCreditNoteCLI {
 		this.manager = manager;
 	}
 
-	public void createCreditNote() {
+	public PTCreditNote createCreditNote() {
 		PTProductEntity product;
 		PTBusinessEntity business;
 		PTCustomerEntity customer;
@@ -47,7 +47,7 @@ public class CreateCreditNoteCLI {
 							.createBusiness();
 					manager.getAppCLI().getBusinesses().add(business);
 				} else {
-					return;
+					return null;
 				}
 			}
 
@@ -65,7 +65,7 @@ public class CreateCreditNoteCLI {
 							.createCustomer();
 					manager.getAppCLI().getCustomers().add(customer);
 				} else {
-					return;
+					return null;
 				}
 			}
 
@@ -83,7 +83,7 @@ public class CreateCreditNoteCLI {
 							.createProduct();
 					manager.getAppCLI().getProducts().add(product);
 				} else {
-					return;
+					return null;
 				}
 			}
 
@@ -109,7 +109,7 @@ public class CreateCreditNoteCLI {
 			} else if (number.contains("FS")) {
 				invoice = manager.getAppCLI().getSimpleInvoiceByNumber(number);
 			} else {
-				return;
+				return null;
 			}
 
 			PTCreditNoteEntry.Builder entry = manager.createCreditNoteEntry(
@@ -125,9 +125,16 @@ public class CreateCreditNoteCLI {
 			}
 			System.out.println("Credit Note: " + creditNote.getNumber()
 					+ " created.");
+			System.out.println("Do you want to print a PDF? (y/n)");
+			String answer = bufferReader.readLine();
+			if (answer.toLowerCase().contains("y")) {
+				manager.exportInvoicePDF(creditNote.getUID());
+			}
+			return creditNote;
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 }

@@ -292,29 +292,29 @@ public class AppManager {
 				business.getUID(), from, to);
 	}
 
-//	public void exportInvoicePDF(UID invoiceUID) {
-//		try {
-//			billy.exportInvoicePDF(invoiceUID);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	public void exportSimpleInvoicePDF(UID simpleInvoiceUID) {
-//		try {
-//			billy.exportSimpleInvoicePDF(simpleInvoiceUID);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	public void exportCreditNotePDF(UID creditNoteUID) {
-//		try {
-//			billy.exportInvoicePDF(creditNoteUID);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public void exportInvoicePDF(UID invoiceUID) {
+		try {
+			billy.exportInvoicePDF(invoiceUID);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void exportSimpleInvoicePDF(UID simpleInvoiceUID) {
+		try {
+			billy.exportSimpleInvoicePDF(simpleInvoiceUID);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void exportCreditNotePDF(UID creditNoteUID) {
+		try {
+			billy.exportInvoicePDF(creditNoteUID);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public PTCustomer endCustomer() {
 		return billy.endConsumer();

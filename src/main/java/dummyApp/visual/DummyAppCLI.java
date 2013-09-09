@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.google.inject.Injector;
 import com.premiumminds.billy.portugal.services.entities.PTBusiness;
+import com.premiumminds.billy.portugal.services.entities.PTCreditNote;
 import com.premiumminds.billy.portugal.services.entities.PTCustomer;
 import com.premiumminds.billy.portugal.services.entities.PTInvoice;
 import com.premiumminds.billy.portugal.services.entities.PTProduct;
@@ -34,11 +35,15 @@ public class DummyAppCLI {
 	List<PTBusiness> businesses;
 	List<PTInvoice> invoices;
 	List<PTSimpleInvoice> simpleInvoices;
+	List<PTCreditNote> creditNotes;
 
 	public DummyAppCLI() {
 		products = new ArrayList<PTProduct>();
 		customers = new ArrayList<PTCustomer>();
 		businesses = new ArrayList<PTBusiness>();
+		invoices = new ArrayList<PTInvoice>();
+		simpleInvoices = new ArrayList<PTSimpleInvoice>();
+		creditNotes = new ArrayList<PTCreditNote>();
 	}
 
 	public DummyAppCLI(Injector injector) {
@@ -49,6 +54,7 @@ public class DummyAppCLI {
 		businesses = new ArrayList<PTBusiness>();
 		invoices = new ArrayList<PTInvoice>();
 		simpleInvoices = new ArrayList<PTSimpleInvoice>();
+		creditNotes = new ArrayList<PTCreditNote>();
 		manager.setAppCLI(this);
 	}
 
@@ -70,6 +76,10 @@ public class DummyAppCLI {
 
 	public List<PTSimpleInvoice> getSimpleInvoices() {
 		return simpleInvoices;
+	}
+	
+	public List<PTCreditNote> getCreditNotes() {
+		return creditNotes;
 	}
 
 	public PTProduct getProductByDescription(String description) {
@@ -109,9 +119,18 @@ public class DummyAppCLI {
 	}
 
 	public PTSimpleInvoice getSimpleInvoiceByNumber(String number) {
-		for (PTSimpleInvoice i : simpleInvoices) {
-			if (i.getNumber().equals(number)) {
-				return i;
+		for (PTSimpleInvoice si : simpleInvoices) {
+			if (si.getNumber().equals(number)) {
+				return si;
+			}
+		}
+		return null;
+	}
+	
+	public PTCreditNote getcreditNoteByNumber(String number) {
+		for (PTCreditNote cn : creditNotes) {
+			if (cn.getNumber().equals(number)) {
+				return cn;
 			}
 		}
 		return null;
@@ -176,7 +195,10 @@ public class DummyAppCLI {
 						}
 						break;
 					case 6:
-						createCreditNoteCLI.createCreditNote();
+						PTCreditNote cn;
+						if((cn = createCreditNoteCLI.createCreditNote()) != null){
+							creditNotes.add(cn);
+						}
 						break;
 					case 7:
 						exportSAFT.exportSAFT();
