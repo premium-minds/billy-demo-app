@@ -86,4 +86,8 @@ public class Billy {
 		PTCreditNoteTemplateBundle bundle = new PTCreditNoteTemplateBundle(Billy.LOGO_PATH, xsl, "12-NrCertificado");
 		billyPortugal.creditNotes().pdfExport(new PTCreditNotePDFExportRequest(invoiceUID, bundle));
 	}
+	
+	public PTCustomer endConsumer() {
+		return billyPortugal.customers().endConsumer();
+	}
 }

@@ -3,6 +3,9 @@ package dummyApp.visual.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -24,7 +27,7 @@ public class ExportSAFT {
 
 	public void exportSAFT() {
 		PTBusinessEntity business;
-		String businessName, year, month, day;
+		String businessName, date;
 
 		try {
 			System.out.println("Business Name:");
@@ -33,7 +36,7 @@ public class ExportSAFT {
 			business = (PTBusinessEntity) manager.getAppCLI().getBusinessByName(businessName);
 
 			if (business == null) {
-				System.out.println("Business not found, create new?");
+				System.out.println("Business not found, create new? (y/n)");
 				String answer = bufferReader.readLine();
 				if (answer.toLowerCase().contains("y")) {
 					business = (PTBusinessEntity) new CreateBusinessCLI(manager)
@@ -44,22 +47,18 @@ public class ExportSAFT {
 				}
 			}
 
-			System.out.println("From date:");
-			System.out.println("year");
-			year = bufferReader.readLine();
-			System.out.println("month");
-			month = bufferReader.readLine();
-			System.out.println("day");
-			day = bufferReader.readLine();
+			System.out.println("From date: (dd/mm/yyyy)");
+			date = bufferReader.readLine();
 
-			Calendar calendar = Calendar.getInstance();
-			calendar.set(Integer.parseInt(year), Integer.parseInt(month),
-					Integer.parseInt(day));
+			DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+			Date formattedDate = formatter.parse(date);
 
-			manager.exportSaft(business, calendar.getTime(), new Date());
+			manager.exportSaft(business, formattedDate, new Date());
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (SAFTPTExportException e) {
+			e.printStackTrace();
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}

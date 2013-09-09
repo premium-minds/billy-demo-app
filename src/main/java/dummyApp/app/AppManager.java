@@ -71,15 +71,12 @@ public class AppManager {
 		parameters.setPublicKey(generator.getPublicKey());
 		parameters.setPrivateKeyVersion("1");
 		parameters.setEACCode("31400");
-		parameters.setInvoiceSeries("DEFAULT");
 	}
 
-	
 	public DummyAppCLI getAppCLI() {
 		return appCLI;
 	}
 
-	
 	public void setAppCLI(DummyAppCLI appCLI) {
 		this.appCLI = appCLI;
 	}
@@ -207,6 +204,7 @@ public class AppManager {
 				.setBusinessUID(business.getUID())
 				.setCustomerUID(customer.getUID()).setDate(new Date())
 				.setSourceId("Source").setSourceBilling(SourceBilling.P);
+		parameters.setInvoiceSeries("INVOICE");
 		try {
 			billy.issueInvoice(builder, parameters);
 		} catch (DocumentIssuingException e) {
@@ -229,6 +227,7 @@ public class AppManager {
 				.setCustomerUID(customer.getUID()).setDate(new Date())
 				.setSourceId("Source").setSourceBilling(SourceBilling.P)
 				.setClientType(clientType);
+		parameters.setInvoiceSeries("SIMPLE");
 		try {
 			billy.issueSimpleInvoice(builder, parameters);
 		} catch (DocumentIssuingException e) {
@@ -253,7 +252,8 @@ public class AppManager {
 				.setProductUID(product.getUID()).setReason(reason)
 				.setReferenceUID(new UID(documentUID))
 				.setUnitAmount(AmountType.WITH_TAX, unitAmount)
-				.setUnitOfMeasure(product.getUnitOfMeasure());
+				.setUnitOfMeasure(product.getUnitOfMeasure())
+				.setTaxPointDate(new Date());
 
 		return builder;
 	}
@@ -265,10 +265,10 @@ public class AppManager {
 
 		builder.addEntry(entry).addPayment(payment).setBilled(false)
 				.setBusinessUID(business.getUID()).setCancelled(false)
-				.setCurrency(Currency.getInstance("EUR"))
 				.setCustomerUID(customer.getUID()).setDate(new Date())
 				.setSelfBilled(false).setSourceBilling(SourceBilling.P)
 				.setSourceId("SOURCE");
+		parameters.setInvoiceSeries("CREDIT");
 		try {
 			billy.issueCreditNote(builder, parameters);
 		} catch (DocumentIssuingException e) {
@@ -289,6 +289,10 @@ public class AppManager {
 			throws IOException, SAFTPTExportException {
 		billy.exportSaft(business.getApplications().get(0).getUID(),
 				business.getUID(), from, to);
+	}
+
+	public PTCustomer endCustomer() {
+		return billy.endConsumer();
 	}
 
 }
