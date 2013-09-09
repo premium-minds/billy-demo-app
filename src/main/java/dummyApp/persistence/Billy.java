@@ -22,6 +22,8 @@ import com.premiumminds.billy.portugal.services.export.pdf.creditnote.PTCreditNo
 import com.premiumminds.billy.portugal.services.export.pdf.creditnote.PTCreditNoteTemplateBundle;
 import com.premiumminds.billy.portugal.services.export.pdf.invoice.PTInvoicePDFExportRequest;
 import com.premiumminds.billy.portugal.services.export.pdf.invoice.PTInvoiceTemplateBundle;
+import com.premiumminds.billy.portugal.services.export.pdf.simpleinvoice.PTSimpleInvoicePDFExportRequest;
+import com.premiumminds.billy.portugal.services.export.pdf.simpleinvoice.PTSimpleInvoiceTemplateBundle;
 
 public class Billy {
 
@@ -79,12 +81,23 @@ public class Billy {
 		billyPortugal.invoices().pdfExport(
 				new PTInvoicePDFExportRequest(invoiceUID, bundle));
 	}
-	
+
+	public void exportSimpleInvoicePDF(UID invoiceUID) throws IOException,
+			SAFTPTExportException, ExportServiceException {
+		InputStream xsl = new FileInputStream(Billy.SIMPLE_INVOICE_XSL_PATH);
+		PTSimpleInvoiceTemplateBundle bundle = new PTSimpleInvoiceTemplateBundle(
+				Billy.LOGO_PATH, xsl, "12-NrCertificado");
+		billyPortugal.simpleInvoices().pdfExport(
+				new PTSimpleInvoicePDFExportRequest(invoiceUID, bundle));
+	}
+
 	public void exportCreditNotePDF(UID invoiceUID) throws IOException,
 			SAFTPTExportException, ExportServiceException {
 		InputStream xsl = new FileInputStream(Billy.CREDIT_NOTE_XSL_PATH);
-		PTCreditNoteTemplateBundle bundle = new PTCreditNoteTemplateBundle(Billy.LOGO_PATH, xsl, "12-NrCertificado");
-		billyPortugal.creditNotes().pdfExport(new PTCreditNotePDFExportRequest(invoiceUID, bundle));
+		PTCreditNoteTemplateBundle bundle = new PTCreditNoteTemplateBundle(
+				Billy.LOGO_PATH, xsl, "12-NrCertificado");
+		billyPortugal.creditNotes().pdfExport(
+				new PTCreditNotePDFExportRequest(invoiceUID, bundle));
 	}
 	
 	public PTCustomer endConsumer() {
