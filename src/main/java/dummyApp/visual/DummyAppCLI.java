@@ -20,6 +20,7 @@ import dummyApp.visual.util.CreateCustomerCLI;
 import dummyApp.visual.util.CreateInvoiceCLI;
 import dummyApp.visual.util.CreateProductCLI;
 import dummyApp.visual.util.CreateSimpleInvoiceCLI;
+import dummyApp.visual.util.ExportPDF;
 import dummyApp.visual.util.ExportSAFT;
 
 public class DummyAppCLI {
@@ -50,67 +51,66 @@ public class DummyAppCLI {
 		simpleInvoices = new ArrayList<PTSimpleInvoice>();
 		manager.setAppCLI(this);
 	}
-	
-	
+
 	public List<PTCustomer> getCustomers() {
 		return customers;
 	}
-	
+
 	public List<PTProduct> getProducts() {
 		return products;
 	}
-	
+
 	public List<PTBusiness> getBusinesses() {
 		return businesses;
 	}
-	
+
 	public List<PTInvoice> getInvoices() {
 		return invoices;
 	}
-	
+
 	public List<PTSimpleInvoice> getSimpleInvoices() {
 		return simpleInvoices;
 	}
-	
+
 	public PTProduct getProductByDescription(String description) {
-		for(PTProduct p : products) {
-			if(p.getDescription().equals(description)) {
+		for (PTProduct p : products) {
+			if (p.getDescription().equals(description)) {
 				return p;
 			}
 		}
 		return null;
 	}
-	
+
 	public PTBusiness getBusinessByName(String name) {
-		for(PTBusiness b : businesses) {
-			if(b.getName().equals(name)) {
-			return b;
+		for (PTBusiness b : businesses) {
+			if (b.getName().equals(name)) {
+				return b;
 			}
 		}
 		return null;
 	}
-	
+
 	public PTCustomer getCustomerByName(String name) {
-		for(PTCustomer c : customers) {
-			if(c.getName().equals(name)) {
+		for (PTCustomer c : customers) {
+			if (c.getName().equals(name)) {
 				return c;
 			}
 		}
 		return null;
 	}
-	
+
 	public PTInvoice getInvoiceByNumber(String number) {
-		for(PTInvoice i : invoices) {
-			if(i.getNumber().equals(number)) {
+		for (PTInvoice i : invoices) {
+			if (i.getNumber().equals(number)) {
 				return i;
 			}
 		}
 		return null;
 	}
-	
+
 	public PTSimpleInvoice getSimpleInvoiceByNumber(String number) {
-		for(PTSimpleInvoice i : simpleInvoices) {
-			if(i.getNumber().equals(number)) {
+		for (PTSimpleInvoice i : simpleInvoices) {
+			if (i.getNumber().equals(number)) {
 				return i;
 			}
 		}
@@ -122,9 +122,12 @@ public class DummyAppCLI {
 		CreateBusinessCLI createBusinessCLI = new CreateBusinessCLI(manager);
 		CreateProductCLI createProductCLI = new CreateProductCLI(manager);
 		CreateInvoiceCLI createInvoiceCLI = new CreateInvoiceCLI(manager);
-		CreateSimpleInvoiceCLI createSimpleInvoiceCLI = new CreateSimpleInvoiceCLI(manager);
-		CreateCreditNoteCLI createCreditNoteCLI = new CreateCreditNoteCLI(manager);
+		CreateSimpleInvoiceCLI createSimpleInvoiceCLI = new CreateSimpleInvoiceCLI(
+				manager);
+		CreateCreditNoteCLI createCreditNoteCLI = new CreateCreditNoteCLI(
+				manager);
 		ExportSAFT exportSAFT = new ExportSAFT(manager);
+		ExportPDF exportPDF = new ExportPDF(manager);
 
 		while (true) {
 			System.out.println("Press number key and return to:");
@@ -168,7 +171,7 @@ public class DummyAppCLI {
 						break;
 					case 5:
 						PTSimpleInvoice si;
-						if((si = createSimpleInvoiceCLI.createInvoice()) != null) {
+						if ((si = createSimpleInvoiceCLI.createInvoice()) != null) {
 							simpleInvoices.add(si);
 						}
 						break;
@@ -179,7 +182,7 @@ public class DummyAppCLI {
 						exportSAFT.exportSAFT();
 						break;
 					case 8:
-						// Export PDF
+						exportPDF.exportPDF();
 						break;
 					case 0:
 						return;
