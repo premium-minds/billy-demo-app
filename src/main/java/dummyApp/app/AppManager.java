@@ -279,8 +279,7 @@ public class AppManager {
 	}
 
 	public PTPayment.Builder createPayment(BigDecimal amount) {
-		PTPayment.Builder payment = new PTPayment.Builder(
-				injector.getInstance(DAOPTPayment.class));
+		PTPayment.Builder payment = billyPortugal.payments().builder();
 		payment.setPaymentAmount(amount).setPaymentDate(new Date())
 				.setPaymentMethod(PaymentMechanism.CASH);
 
