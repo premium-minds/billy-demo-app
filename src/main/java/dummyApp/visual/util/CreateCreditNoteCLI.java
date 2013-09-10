@@ -128,7 +128,7 @@ public class CreateCreditNoteCLI {
 			System.out.println("Do you want to print a PDF? (y/n)");
 			String answer = bufferReader.readLine();
 			if (answer.toLowerCase().contains("y")) {
-				manager.exportInvoicePDF(creditNote.getUID());
+				manager.exportCreditNotePDF(creditNote.getUID());
 			}
 			return creditNote;
 

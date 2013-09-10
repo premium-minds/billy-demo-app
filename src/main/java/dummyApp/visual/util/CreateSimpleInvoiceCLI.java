@@ -112,7 +112,7 @@ public class CreateSimpleInvoiceCLI {
 			System.out.println("Do you want to print a PDF? (y/n)");
 			String answer = bufferReader.readLine();
 			if (answer.toLowerCase().contains("y")) {
-				manager.exportInvoicePDF(simpleInvoice.getUID());
+				manager.exportSimpleInvoicePDF(simpleInvoice.getUID());
 			}
 			return simpleInvoice;
 
