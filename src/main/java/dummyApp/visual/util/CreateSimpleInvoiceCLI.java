@@ -117,7 +117,7 @@ public class CreateSimpleInvoiceCLI {
 			return simpleInvoice;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("[ERROR] An error ocurred at: " + e.toString());
 		}
 		return null;
 	}

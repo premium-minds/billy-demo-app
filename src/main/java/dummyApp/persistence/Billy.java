@@ -30,6 +30,8 @@ public class Billy {
 	public static final String INVOICE_XSL_PATH = "src/main/resources/templates/pt_invoice.xsl";
 	public static final String CREDIT_NOTE_XSL_PATH = "src/main/resources/templates/pt_creditnote.xsl";
 	public static final String SIMPLE_INVOICE_XSL_PATH = "src/main/resources/templates/pt_simpleinvoice.xsl";
+	public static final String RESULT_PATH = "src/main/resources/export/Result.pdf";
+	public static final String SAFT_RESULT_PATH = "src/main/resources/export/saft.xml";
 	public static final String LOGO_PATH = "src/main/resources/logoBig.png";
 	public Injector injector;
 	public BillyPortugal billyPortugal;
@@ -70,7 +72,7 @@ public class Billy {
 	public void exportSaft(UID appUID, UID businessUID, Date from, Date to)
 			throws IOException, SAFTPTExportException {
 		billyPortugal.saft().export(appUID, businessUID, "12",
-				from, to);
+				from, to, SAFT_RESULT_PATH);
 	}
 
 	public void exportInvoicePDF(UID invoiceUID) throws IOException,
@@ -79,16 +81,16 @@ public class Billy {
 		PTInvoiceTemplateBundle bundle = new PTInvoiceTemplateBundle(
 				Billy.LOGO_PATH, xsl, "12");
 		billyPortugal.invoices().pdfExport(
-				new PTInvoicePDFExportRequest(invoiceUID, bundle));
+				new PTInvoicePDFExportRequest(invoiceUID, bundle, RESULT_PATH));
 	}
 
-	public void exportSimpleInvoicePDF(UID invoiceUID) throws IOException,
+	public void exportSimpleInvoicePDF(UID simpleInvoiceUID) throws IOException,
 			SAFTPTExportException, ExportServiceException {
 		InputStream xsl = new FileInputStream(Billy.SIMPLE_INVOICE_XSL_PATH);
 		PTSimpleInvoiceTemplateBundle bundle = new PTSimpleInvoiceTemplateBundle(
 				Billy.LOGO_PATH, xsl, "12");
 		billyPortugal.simpleInvoices().pdfExport(
-				new PTSimpleInvoicePDFExportRequest(invoiceUID, bundle));
+				new PTSimpleInvoicePDFExportRequest(simpleInvoiceUID, bundle, RESULT_PATH));
 	}
 
 	public void exportCreditNotePDF(UID invoiceUID) throws IOException,
@@ -97,7 +99,7 @@ public class Billy {
 		PTCreditNoteTemplateBundle bundle = new PTCreditNoteTemplateBundle(
 				Billy.LOGO_PATH, xsl, "12");
 		billyPortugal.creditNotes().pdfExport(
-				new PTCreditNotePDFExportRequest(invoiceUID, bundle));
+				new PTCreditNotePDFExportRequest(invoiceUID, bundle, RESULT_PATH));
 	}
 	
 	public PTCustomer endConsumer() {

@@ -3,6 +3,8 @@ package dummyApp.visual.util;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import com.premiumminds.billy.core.exceptions.BillyRuntimeException;
+import com.premiumminds.billy.core.exceptions.InvalidTaxIdentificationNumberException;
 import com.premiumminds.billy.portugal.services.entities.PTApplication;
 import com.premiumminds.billy.portugal.services.entities.PTBusiness;
 
@@ -68,7 +70,7 @@ public class CreateBusinessCLI {
 			} else {
 				appbuilder = manager.getApp();
 			}
-
+			
 			PTBusiness business = manager.createBusiness(appbuilder, name,
 					taxNumber, street, number, postalCode, city, telephone);
 			if (business == null) {
@@ -77,7 +79,13 @@ public class CreateBusinessCLI {
 			System.out.println("Business: " + business.getName() + " created.");
 			return business;
 
-		} catch (Exception e) {
+		}catch(InvalidTaxIdentificationNumberException e){
+			System.out.println("[ERROR] An error ocurred with the tax identification number: " + e.toString());
+		} 
+		catch(BillyRuntimeException e){
+			System.out.println("[ERROR] An error ocurred: " + e.toString());
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;

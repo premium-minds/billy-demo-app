@@ -8,6 +8,7 @@ import java.util.Currency;
 import java.util.Date;
 
 import com.google.inject.Injector;
+import com.premiumminds.billy.core.exceptions.BillyRuntimeException;
 import com.premiumminds.billy.core.services.UID;
 import com.premiumminds.billy.core.services.builders.GenericInvoiceEntryBuilder.AmountType;
 import com.premiumminds.billy.core.services.entities.Product.ProductType;
@@ -83,7 +84,7 @@ public class AppManager {
 
 	public PTCustomerEntity createCustomer(String name,
 			String taxRegistrationNumber, String street, String number,
-			String postalCode, String city, String telephone) {
+			String postalCode, String city, String telephone) throws BillyRuntimeException{
 		PTCustomer.Builder builder = billyPortugal.customers().builder();
 		PTAddress.Builder address = createAddress(street, number, postalCode,
 				city);
@@ -100,14 +101,14 @@ public class AppManager {
 
 	public PTBusinessEntity createBusiness(String name,
 			String taxRegistrationNumber, String street, String number,
-			String postalCode, String city, String telephone) {
+			String postalCode, String city, String telephone) throws BillyRuntimeException{
 		return createBusiness(application, name, taxRegistrationNumber, street,
 				number, postalCode, city, telephone);
 	}
 
 	public PTBusinessEntity createBusiness(PTApplication.Builder application,
 			String name, String taxRegistrationNumber, String street,
-			String number, String postalCode, String city, String telephone) {
+			String number, String postalCode, String city, String telephone) throws BillyRuntimeException{
 		PTBusiness.Builder builder = billyPortugal.businesses().builder();
 		PTContact.Builder contact = createContact(name, telephone);
 		PTAddress.Builder address = createAddress(street, number, postalCode,
@@ -123,7 +124,7 @@ public class AppManager {
 	}
 
 	public PTAddress.Builder createAddress(String street, String number,
-			String postalCode, String city) {
+			String postalCode, String city) throws BillyRuntimeException{
 		PTAddress.Builder builder = billyPortugal.addresses().builder();
 		builder.setStreetName(street)
 				.setNumber(number)
@@ -137,14 +138,14 @@ public class AppManager {
 		return builder;
 	}
 
-	public PTContact.Builder createContact(String name, String telephone) {
+	public PTContact.Builder createContact(String name, String telephone) throws BillyRuntimeException{
 		PTContact.Builder builder = billyPortugal.contacts().builder();
 		builder.setName(name).setTelephone(telephone);
 
 		return builder;
 	}
 
-	public PTApplication.Builder createApplication() {
+	public PTApplication.Builder createApplication() throws BillyRuntimeException{
 		PTApplication.Builder application = billyPortugal.applications()
 				.builder();
 		PTContact.Builder contact = createContact("Premium Minds", "217817555");
@@ -162,7 +163,7 @@ public class AppManager {
 	}
 
 	public PTProductEntity createProduct(String productCode,
-			String description, String unitOfMeasure) {
+			String description, String unitOfMeasure) throws BillyRuntimeException{
 		Taxes taxes = new Taxes(injector);
 		PTProduct.Builder builder = billyPortugal.products().builder();
 
@@ -177,7 +178,7 @@ public class AppManager {
 	}
 
 	public PTInvoiceEntry.Builder createInvoiceEntry(BigDecimal quantity,
-			BigDecimal price, PTProductEntity product) {
+			BigDecimal price, PTProductEntity product) throws BillyRuntimeException{
 		PTInvoiceEntry.Builder builder = billyPortugal.invoices()
 				.entryBuilder();
 
@@ -197,7 +198,7 @@ public class AppManager {
 
 	public PTInvoiceEntity createInvoice(PTInvoiceEntry.Builder entry,
 			PTPayment.Builder payment, PTBusinessEntity business,
-			PTCustomerEntity customer) {
+			PTCustomerEntity customer) throws BillyRuntimeException{
 		PTInvoice.Builder builder = billyPortugal.invoices().builder();
 		builder.addEntry(entry).addPayment(payment).setSelfBilled(false)
 				.setCancelled(false).setBilled(false)
@@ -217,7 +218,7 @@ public class AppManager {
 	public PTSimpleInvoiceEntity createSimpleInvoice(
 			PTInvoiceEntry.Builder entry, PTPayment.Builder payment,
 			PTBusinessEntity business, PTCustomerEntity customer,
-			CLIENTTYPE clientType) {
+			CLIENTTYPE clientType) throws BillyRuntimeException{
 		PTSimpleInvoice.Builder builder = billyPortugal.simpleInvoices()
 				.builder();
 
@@ -239,7 +240,7 @@ public class AppManager {
 
 	public PTCreditNoteEntry.Builder createCreditNoteEntry(
 			PTProductEntity product, String documentUID, BigDecimal quantity,
-			BigDecimal unitAmount, String reason) {
+			BigDecimal unitAmount, String reason) throws BillyRuntimeException{
 		PTCreditNoteEntry.Builder builder = billyPortugal.creditNotes()
 				.entryBuilder();
 
@@ -260,7 +261,7 @@ public class AppManager {
 
 	public PTCreditNoteEntity createCreditNote(PTCreditNoteEntry.Builder entry,
 			PTPayment.Builder payment, PTBusinessEntity business,
-			PTCustomerEntity customer) {
+			PTCustomerEntity customer) throws BillyRuntimeException{
 		PTCreditNote.Builder builder = billyPortugal.creditNotes().builder();
 
 		builder.addEntry(entry).addPayment(payment).setBilled(false)
@@ -310,7 +311,7 @@ public class AppManager {
 
 	public void exportCreditNotePDF(UID creditNoteUID) {
 		try {
-			billy.exportInvoicePDF(creditNoteUID);
+			billy.exportCreditNotePDF(creditNoteUID);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

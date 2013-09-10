@@ -51,9 +51,9 @@ public class CreateProductCLI {
 			return product;
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("[ERROR] An error ocurred at: " + e.toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("[ERROR] An error ocurred at: " + e.toString());
 		}
 		return null;
 
