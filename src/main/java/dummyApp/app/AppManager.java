@@ -164,7 +164,7 @@ public class AppManager {
 
 	public PTProductEntity createProduct(String productCode,
 			String description, String unitOfMeasure) {
-		Taxes taxes = new Taxes(injector);
+		Taxes taxes = billyPortugal.taxes();
 		PTProduct.Builder builder = billyPortugal.products().builder();
 
 		builder.setDescription(description).setNumberCode(productCode)
