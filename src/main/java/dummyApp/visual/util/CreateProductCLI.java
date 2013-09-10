@@ -31,13 +31,13 @@ public class CreateProductCLI {
 			unitOfMeasure = bufferReader.readLine();
 
 			if (description.equals("")) {
-				description = "Desconhecido";
+				description = "Delta Café";
 			}
 			if (productCode.equals("")) {
-				productCode = "Desconhecido";
+				productCode = "56012345667";
 			}
 			if (unitOfMeasure.equals("")) {
-				unitOfMeasure = "Desconhecido";
+				unitOfMeasure = "Kg";
 			}
 
 			PTProduct product = manager.createProduct(productCode, description,

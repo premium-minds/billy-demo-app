@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 
 import com.google.inject.Injector;
 import com.premiumminds.billy.core.services.UID;
@@ -14,7 +15,6 @@ import com.premiumminds.billy.core.services.builders.GenericInvoiceEntryBuilder.
 import com.premiumminds.billy.core.services.entities.Product.ProductType;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
 import com.premiumminds.billy.portugal.BillyPortugal;
-import com.premiumminds.billy.portugal.persistence.dao.DAOPTPayment;
 import com.premiumminds.billy.portugal.persistence.entities.PTBusinessEntity;
 import com.premiumminds.billy.portugal.persistence.entities.PTCreditNoteEntity;
 import com.premiumminds.billy.portugal.persistence.entities.PTCustomerEntity;
@@ -196,11 +196,14 @@ public class AppManager {
 		return builder;
 	}
 
-	public PTInvoiceEntity createInvoice(PTInvoiceEntry.Builder entry,
+	public PTInvoiceEntity createInvoice(List<PTInvoiceEntry.Builder> entries,
 			PTPayment.Builder payment, PTBusinessEntity business,
 			PTCustomerEntity customer) {
 		PTInvoice.Builder builder = billyPortugal.invoices().builder();
-		builder.addEntry(entry).addPayment(payment).setSelfBilled(false)
+		for(PTInvoiceEntry.Builder entry : entries) {
+			builder.addEntry(entry);
+		}
+		builder.addPayment(payment).setSelfBilled(false)
 				.setCancelled(false).setBilled(false)
 				.setBusinessUID(business.getUID())
 				.setCustomerUID(customer.getUID()).setDate(new Date())
@@ -216,13 +219,16 @@ public class AppManager {
 	}
 
 	public PTSimpleInvoiceEntity createSimpleInvoice(
-			PTInvoiceEntry.Builder entry, PTPayment.Builder payment,
+			List<PTInvoiceEntry.Builder> entries, PTPayment.Builder payment,
 			PTBusinessEntity business, PTCustomerEntity customer,
 			CLIENTTYPE clientType) {
 		PTSimpleInvoice.Builder builder = billyPortugal.simpleInvoices()
 				.builder();
+		for(PTInvoiceEntry.Builder entry : entries) {
+			builder.addEntry(entry);
+		}
 
-		builder.addEntry(entry).addPayment(payment).setSelfBilled(false)
+		builder.addPayment(payment).setSelfBilled(false)
 				.setCancelled(false).setBilled(false)
 				.setBusinessUID(business.getUID())
 				.setCustomerUID(customer.getUID()).setDate(new Date())

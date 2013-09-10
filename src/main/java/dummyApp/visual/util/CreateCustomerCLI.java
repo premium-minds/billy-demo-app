@@ -46,25 +46,25 @@ public class CreateCustomerCLI {
 			telephone = bufferReader.readLine();
 
 			if (name.equals("")) {
-				name = "Desconhecido";
+				name = "Hugo";
 			}
 			if (taxNumber.equals("")) {
 				taxNumber = "123456789";
 			}
 			if (street.equals("")) {
-				street = "Desconhecido";
+				street = "Via Aurélia";
 			}
 			if (number.equals("")) {
-				number = "Desconhecido";
+				number = "654";
 			}
 			if (postalCode.equals("")) {
-				postalCode = "Desconhecido";
+				postalCode = "0001-001";
 			}
 			if (city.equals("")) {
-				city = "Desconhecido";
+				city = "Sena";
 			}
 			if (telephone.equals("")) {
-				telephone = "Desconhecido";
+				telephone = "987523146";
 			}
 
 			PTCustomer customer = manager.createCustomer(name, taxNumber,
