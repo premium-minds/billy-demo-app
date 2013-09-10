@@ -67,36 +67,36 @@ public class Billy {
 		billyPortugal.creditNotes().issue(creditNote, params);
 	}
 
-	public void exportSaft(UID appUID, UID businessUID, Date from, Date to)
+	public InputStream exportSaft(UID appUID, UID businessUID, Date from, Date to)
 			throws IOException, SAFTPTExportException {
-		billyPortugal.saft().export(appUID, businessUID, "12",
+		return billyPortugal.saft().export(appUID, businessUID, "12",
 				from, to);
 	}
 
-	public void exportInvoicePDF(UID invoiceUID) throws IOException,
+	public InputStream exportInvoicePDF(UID invoiceUID) throws IOException,
 			SAFTPTExportException, ExportServiceException {
 		InputStream xsl = new FileInputStream(Billy.INVOICE_XSL_PATH);
 		PTInvoiceTemplateBundle bundle = new PTInvoiceTemplateBundle(
-				Billy.LOGO_PATH, xsl, "12");
-		billyPortugal.invoices().pdfExport(
+				Billy.LOGO_PATH, xsl, "123");
+		return billyPortugal.invoices().pdfExport(
 				new PTInvoicePDFExportRequest(invoiceUID, bundle));
 	}
 
-	public void exportSimpleInvoicePDF(UID invoiceUID) throws IOException,
+	public InputStream exportSimpleInvoicePDF(UID invoiceUID) throws IOException,
 			SAFTPTExportException, ExportServiceException {
 		InputStream xsl = new FileInputStream(Billy.SIMPLE_INVOICE_XSL_PATH);
 		PTSimpleInvoiceTemplateBundle bundle = new PTSimpleInvoiceTemplateBundle(
-				Billy.LOGO_PATH, xsl, "12");
-		billyPortugal.simpleInvoices().pdfExport(
+				Billy.LOGO_PATH, xsl, "123");
+		return billyPortugal.simpleInvoices().pdfExport(
 				new PTSimpleInvoicePDFExportRequest(invoiceUID, bundle));
 	}
 
-	public void exportCreditNotePDF(UID invoiceUID) throws IOException,
+	public InputStream exportCreditNotePDF(UID invoiceUID) throws IOException,
 			SAFTPTExportException, ExportServiceException {
 		InputStream xsl = new FileInputStream(Billy.CREDIT_NOTE_XSL_PATH);
 		PTCreditNoteTemplateBundle bundle = new PTCreditNoteTemplateBundle(
-				Billy.LOGO_PATH, xsl, "12");
-		billyPortugal.creditNotes().pdfExport(
+				Billy.LOGO_PATH, xsl, "123");
+		return billyPortugal.creditNotes().pdfExport(
 				new PTCreditNotePDFExportRequest(invoiceUID, bundle));
 	}
 	

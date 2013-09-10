@@ -55,7 +55,7 @@ public class CreateBusinessCLI {
 				number = "Desconhecido";
 			}
 			if (postalCode.equals("")) {
-				postalCode = "Desconhecido";
+				postalCode = "0000-000";
 			}
 			if (city.equals("")) {
 				city = "Desconhecido";

@@ -14,9 +14,8 @@ import com.premiumminds.billy.portugal.services.entities.PTSimpleInvoice.CLIENTT
 
 import dummyApp.app.AppManager;
 
-
 public class CreateSimpleInvoiceCLI {
-	
+
 	BufferedReader bufferReader = new BufferedReader(new InputStreamReader(
 			System.in));
 	AppManager manager;
@@ -37,7 +36,8 @@ public class CreateSimpleInvoiceCLI {
 			System.out.println("Business Name:");
 			businessName = bufferReader.readLine();
 
-			business = (PTBusinessEntity) manager.getAppCLI().getBusinessByName(businessName);
+			business = (PTBusinessEntity) manager.getAppCLI()
+					.getBusinessByName(businessName);
 
 			if (business == null) {
 				System.out.println("Business not found, create new? (y/n)");
@@ -50,29 +50,35 @@ public class CreateSimpleInvoiceCLI {
 					return null;
 				}
 			}
-			
+
 			System.out.println("Customer Name:");
 			customerName = bufferReader.readLine();
 
-			customer = (PTCustomerEntity) manager.getAppCLI().getCustomerByName(customerName);
+			if (customerName.equals("")) {
 
-			if (customer == null && customerName.equals("")) {
 				customer = (PTCustomerEntity) manager.endCustomer();
+				if (!(manager.getAppCLI().getCustomers().contains(customer))) {
+					manager.getAppCLI().getCustomers().add(customer);
+				}
 				type = CLIENTTYPE.CUSTOMER;
 			} else {
-				System.out.println("Customer not found, create new? (y/n)");
-				String answer = bufferReader.readLine();
-				if (answer.toLowerCase().contains("y")) {
-					customer = (PTCustomerEntity) new CreateCustomerCLI(manager)
-							.createCustomer();
-					manager.getAppCLI().getCustomers().add(customer);
+				String answer;
+				customer = (PTCustomerEntity) manager.getAppCLI()
+						.getCustomerByName(customerName);
+				if (customer == null) {
+					System.out.println("Customer not found, create new? (y/n)");
+					answer = bufferReader.readLine();
+					if (answer.toLowerCase().contains("y")) {
+						customer = (PTCustomerEntity) new CreateCustomerCLI(
+								manager).createCustomer();
+						manager.getAppCLI().getCustomers().add(customer);
+					}
 				}
 				System.out.println("Client type: (c-consumer/b-business)");
 				answer = bufferReader.readLine();
-				if(answer.toLowerCase().contains("c")) {
+				if (answer.toLowerCase().contains("c")) {
 					type = CLIENTTYPE.CUSTOMER;
-				}
-				else if (answer.toLowerCase().contains("b")) {
+				} else if (answer.toLowerCase().contains("b")) {
 					type = CLIENTTYPE.BUSINESS;
 				}
 			}
@@ -80,7 +86,8 @@ public class CreateSimpleInvoiceCLI {
 			System.out.println("Product description:");
 			productName = bufferReader.readLine();
 
-			product = (PTProductEntity) manager.getAppCLI().getProductByDescription(productName);
+			product = (PTProductEntity) manager.getAppCLI()
+					.getProductByDescription(productName);
 
 			if (product == null) {
 				System.out.println("Product not found, create new? (y/n)");
@@ -104,11 +111,13 @@ public class CreateSimpleInvoiceCLI {
 			PTPayment.Builder payment = manager.createPayment(price
 					.multiply(quantity));
 
-			PTSimpleInvoice simpleInvoice = manager.createSimpleInvoice(entry, payment, business, customer, type);
+			PTSimpleInvoice simpleInvoice = manager.createSimpleInvoice(entry,
+					payment, business, customer, type);
 			if (simpleInvoice == null) {
 				System.out.println("Something went wrong");
 			}
-			System.out.println("Simple Invoice: " + simpleInvoice.getNumber() + " created.");
+			System.out.println("Simple Invoice: " + simpleInvoice.getNumber()
+					+ " created.");
 			System.out.println("Do you want to print a PDF? (y/n)");
 			String answer = bufferReader.readLine();
 			if (answer.toLowerCase().contains("y")) {

@@ -1,6 +1,7 @@
 package dummyApp.app;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -286,34 +287,37 @@ public class AppManager {
 		return payment;
 	}
 
-	public void exportSaft(PTBusinessEntity business, Date from, Date to)
+	public InputStream exportSaft(PTBusinessEntity business, Date from, Date to)
 			throws IOException, SAFTPTExportException {
-		billy.exportSaft(business.getApplications().get(0).getUID(),
+		return billy.exportSaft(business.getApplications().get(0).getUID(),
 				business.getUID(), from, to);
 	}
 
-	public void exportInvoicePDF(UID invoiceUID) {
+	public InputStream exportInvoicePDF(UID invoiceUID) {
 		try {
-			billy.exportInvoicePDF(invoiceUID);
+			return billy.exportInvoicePDF(invoiceUID);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
-	public void exportSimpleInvoicePDF(UID simpleInvoiceUID) {
+	public InputStream exportSimpleInvoicePDF(UID simpleInvoiceUID) {
 		try {
-			billy.exportSimpleInvoicePDF(simpleInvoiceUID);
+			return billy.exportSimpleInvoicePDF(simpleInvoiceUID);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
-	public void exportCreditNotePDF(UID creditNoteUID) {
+	public InputStream exportCreditNotePDF(UID creditNoteUID) {
 		try {
-			billy.exportInvoicePDF(creditNoteUID);
+			return billy.exportCreditNotePDF(creditNoteUID);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	public PTCustomer endCustomer() {
