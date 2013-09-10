@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 
+import com.premiumminds.billy.core.exceptions.InvalidTaxIdentificationNumberException;
 import com.premiumminds.billy.portugal.persistence.entities.PTBusinessEntity;
 import com.premiumminds.billy.portugal.persistence.entities.PTCustomerEntity;
 import com.premiumminds.billy.portugal.persistence.entities.PTProductEntity;
@@ -133,7 +134,7 @@ public class CreateCreditNoteCLI {
 			return creditNote;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+				System.out.println("[ERROR] An error ocurred at: " + e.toString());
 		}
 		return null;
 	}

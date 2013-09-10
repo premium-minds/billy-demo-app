@@ -55,11 +55,11 @@ public class ExportSAFT {
 
 			manager.exportSaft(business, formattedDate, new Date());
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("[ERROR] An error ocurred at: " + e.toString());
 		} catch (SAFTPTExportException e) {
-			e.printStackTrace();
+			System.out.println("[ERROR] An error ocurred at: " + e.toString());
 		} catch (ParseException e) {
-			e.printStackTrace();
+			System.out.println("[ERROR] An error ocurred at: " + e.toString());
 		}
 	}
 }

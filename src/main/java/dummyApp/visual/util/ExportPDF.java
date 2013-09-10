@@ -47,7 +47,7 @@ public class ExportPDF {
 			manager.exportCreditNotePDF(manager.getAppCLI().getcreditNoteByNumber(document).getUID());
 		}
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("[ERROR] An error ocurred at: " + e.toString());
 		}
 	}
 }

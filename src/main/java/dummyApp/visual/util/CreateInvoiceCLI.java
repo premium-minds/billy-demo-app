@@ -122,7 +122,7 @@ public class CreateInvoiceCLI {
 			return invoice;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("[ERROR] An error ocurred at: " + e.toString());
 		}
 		return null;
 	}

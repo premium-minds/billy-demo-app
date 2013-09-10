@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import com.google.inject.Injector;
+import com.premiumminds.billy.core.exceptions.BillyRuntimeException;
+import com.premiumminds.billy.core.exceptions.InvalidTaxIdentificationNumberException;
 import com.premiumminds.billy.portugal.services.entities.PTCustomer;
 
 import dummyApp.app.AppManager;
@@ -19,7 +21,6 @@ public class CreateCustomerCLI {
 		this.manager = manager;
 	}
 
-	@SuppressWarnings("finally")
 	public PTCustomer createCustomer() {
 		String name;
 		String taxNumber;
@@ -74,10 +75,16 @@ public class CreateCustomerCLI {
 			}
 			System.out.println("Customer: " + customer.getName() + " created.");
 			return customer;
-		} catch (IOException e) {
-			e.printStackTrace();
+		}catch(InvalidTaxIdentificationNumberException e){
+			System.out.println("[ERROR] An error ocurred with the tax identification number: " + e.toString());
+		} 
+		catch(BillyRuntimeException e){
+			System.out.println("[ERROR] An error ocurred: " + e.toString());
+		} 
+		catch (IOException e) {
+			System.out.println("[ERROR] An error ocurred at: " + e.toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("[ERROR] An error ocurred at: " + e.toString());
 		}
 		return null;
 	}
