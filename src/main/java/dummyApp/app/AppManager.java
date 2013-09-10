@@ -55,6 +55,7 @@ public class AppManager {
 	private PTApplication.Builder application;
 	private PTIssuingParams parameters;
 	private DummyAppCLI appCLI;
+	private Taxes taxes;
 
 	public PTApplication.Builder getApp() {
 		return application;
@@ -65,7 +66,7 @@ public class AppManager {
 		billyPortugal = new BillyPortugal(this.injector);
 		billy = new Billy(this.injector, billyPortugal);
 		application = createApplication();
-
+		taxes = billyPortugal.taxes();
 		KeyGenerator generator = new KeyGenerator(App.PRIVATE_KEY_DIR);
 		parameters = new PTIssuingParamsImpl();
 		parameters.setPrivateKey(generator.getPrivateKey());
@@ -80,6 +81,10 @@ public class AppManager {
 
 	public void setAppCLI(DummyAppCLI appCLI) {
 		this.appCLI = appCLI;
+	}
+	
+	public Taxes getTaxes() {
+		return this.taxes;
 	}
 
 	public PTCustomerEntity createCustomer(String name,
@@ -163,14 +168,13 @@ public class AppManager {
 	}
 
 	public PTProductEntity createProduct(String productCode,
-			String description, String unitOfMeasure) {
-		Taxes taxes = billyPortugal.taxes();
+			String description, String unitOfMeasure, UID tax) {
 		PTProduct.Builder builder = billyPortugal.products().builder();
 
 		builder.setDescription(description).setNumberCode(productCode)
 				.setProductCode(productCode).setType(ProductType.GOODS)
 				.setUnitOfMeasure(unitOfMeasure)
-				.addTaxUID(taxes.continent().normal().getUID());
+				.addTaxUID(tax);
 
 		billy.persistProduct(builder);
 
