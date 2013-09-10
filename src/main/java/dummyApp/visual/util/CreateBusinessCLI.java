@@ -20,7 +20,6 @@ public class CreateBusinessCLI {
 		this.manager = manager;
 	}
 
-	@SuppressWarnings("finally")
 	public PTBusiness createBusiness() {
 
 		String name, taxNumber, street, number, postalCode, city, telephone, app;
@@ -45,25 +44,25 @@ public class CreateBusinessCLI {
 			PTApplication.Builder appbuilder;
 
 			if (name.equals("")) {
-				name = "Desconhecido";
+				name = "Exemplo";
 			}
 			if (taxNumber.equals("")) {
 				taxNumber = "123456789";
 			}
 			if (street.equals("")) {
-				street = "Desconhecido";
+				street = "Via Ápia";
 			}
 			if (number.equals("")) {
-				number = "Desconhecido";
+				number = "999";
 			}
 			if (postalCode.equals("")) {
-				postalCode = "Desconhecido";
+				postalCode = "0000-001";
 			}
 			if (city.equals("")) {
-				city = "Desconhecido";
+				city = "Olissipo";
 			}
 			if (telephone.equals("")) {
-				telephone = "Desconhecido";
+				telephone = "978548961";
 			}
 			if (app.equals("y")) {
 				appbuilder = manager.createApplication();

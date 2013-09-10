@@ -1,11 +1,13 @@
 package dummyApp.app;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Currency;
 import java.util.Date;
+import java.util.List;
 
 import com.google.inject.Injector;
 import com.premiumminds.billy.core.exceptions.BillyRuntimeException;
@@ -14,7 +16,6 @@ import com.premiumminds.billy.core.services.builders.GenericInvoiceEntryBuilder.
 import com.premiumminds.billy.core.services.entities.Product.ProductType;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
 import com.premiumminds.billy.portugal.BillyPortugal;
-import com.premiumminds.billy.portugal.persistence.dao.DAOPTPayment;
 import com.premiumminds.billy.portugal.persistence.entities.PTBusinessEntity;
 import com.premiumminds.billy.portugal.persistence.entities.PTCreditNoteEntity;
 import com.premiumminds.billy.portugal.persistence.entities.PTCustomerEntity;
@@ -55,6 +56,7 @@ public class AppManager {
 	private PTApplication.Builder application;
 	private PTIssuingParams parameters;
 	private DummyAppCLI appCLI;
+	private Taxes taxes;
 
 	public PTApplication.Builder getApp() {
 		return application;
@@ -65,7 +67,7 @@ public class AppManager {
 		billyPortugal = new BillyPortugal(this.injector);
 		billy = new Billy(this.injector, billyPortugal);
 		application = createApplication();
-
+		taxes = billyPortugal.taxes();
 		KeyGenerator generator = new KeyGenerator(App.PRIVATE_KEY_DIR);
 		parameters = new PTIssuingParamsImpl();
 		parameters.setPrivateKey(generator.getPrivateKey());
@@ -80,6 +82,10 @@ public class AppManager {
 
 	public void setAppCLI(DummyAppCLI appCLI) {
 		this.appCLI = appCLI;
+	}
+	
+	public Taxes getTaxes() {
+		return this.taxes;
 	}
 
 	public PTCustomerEntity createCustomer(String name,
@@ -163,14 +169,13 @@ public class AppManager {
 	}
 
 	public PTProductEntity createProduct(String productCode,
-			String description, String unitOfMeasure) throws BillyRuntimeException{
-		Taxes taxes = new Taxes(injector);
+			String description, String unitOfMeasure, UID tax) {
 		PTProduct.Builder builder = billyPortugal.products().builder();
 
 		builder.setDescription(description).setNumberCode(productCode)
 				.setProductCode(productCode).setType(ProductType.GOODS)
 				.setUnitOfMeasure(unitOfMeasure)
-				.addTaxUID(taxes.continent().normal().getUID());
+				.addTaxUID(tax);
 
 		billy.persistProduct(builder);
 
@@ -196,11 +201,14 @@ public class AppManager {
 		return builder;
 	}
 
-	public PTInvoiceEntity createInvoice(PTInvoiceEntry.Builder entry,
+	public PTInvoiceEntity createInvoice(List<PTInvoiceEntry.Builder> entries,
 			PTPayment.Builder payment, PTBusinessEntity business,
 			PTCustomerEntity customer) throws BillyRuntimeException{
 		PTInvoice.Builder builder = billyPortugal.invoices().builder();
-		builder.addEntry(entry).addPayment(payment).setSelfBilled(false)
+		for(PTInvoiceEntry.Builder entry : entries) {
+			builder.addEntry(entry);
+		}
+		builder.addPayment(payment).setSelfBilled(false)
 				.setCancelled(false).setBilled(false)
 				.setBusinessUID(business.getUID())
 				.setCustomerUID(customer.getUID()).setDate(new Date())
@@ -216,13 +224,16 @@ public class AppManager {
 	}
 
 	public PTSimpleInvoiceEntity createSimpleInvoice(
-			PTInvoiceEntry.Builder entry, PTPayment.Builder payment,
+			List<PTInvoiceEntry.Builder> entries, PTPayment.Builder payment,
 			PTBusinessEntity business, PTCustomerEntity customer,
 			CLIENTTYPE clientType) throws BillyRuntimeException{
 		PTSimpleInvoice.Builder builder = billyPortugal.simpleInvoices()
 				.builder();
+		for(PTInvoiceEntry.Builder entry : entries) {
+			builder.addEntry(entry);
+		}
 
-		builder.addEntry(entry).addPayment(payment).setSelfBilled(false)
+		builder.addPayment(payment).setSelfBilled(false)
 				.setCancelled(false).setBilled(false)
 				.setBusinessUID(business.getUID())
 				.setCustomerUID(customer.getUID()).setDate(new Date())
@@ -279,42 +290,44 @@ public class AppManager {
 	}
 
 	public PTPayment.Builder createPayment(BigDecimal amount) {
-		PTPayment.Builder payment = new PTPayment.Builder(
-				injector.getInstance(DAOPTPayment.class));
+		PTPayment.Builder payment = billyPortugal.payments().builder();
 		payment.setPaymentAmount(amount).setPaymentDate(new Date())
 				.setPaymentMethod(PaymentMechanism.CASH);
 
 		return payment;
 	}
 
-	public void exportSaft(PTBusinessEntity business, Date from, Date to)
+	public InputStream exportSaft(PTBusinessEntity business, Date from, Date to)
 			throws IOException, SAFTPTExportException {
-		billy.exportSaft(business.getApplications().get(0).getUID(),
+		return billy.exportSaft(business.getApplications().get(0).getUID(),
 				business.getUID(), from, to);
 	}
 
-	public void exportInvoicePDF(UID invoiceUID) {
+	public InputStream exportInvoicePDF(UID invoiceUID) {
 		try {
-			billy.exportInvoicePDF(invoiceUID);
+			return billy.exportInvoicePDF(invoiceUID);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
-	public void exportSimpleInvoicePDF(UID simpleInvoiceUID) {
+	public InputStream exportSimpleInvoicePDF(UID simpleInvoiceUID) {
 		try {
-			billy.exportSimpleInvoicePDF(simpleInvoiceUID);
+			return billy.exportSimpleInvoicePDF(simpleInvoiceUID);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
-	public void exportCreditNotePDF(UID creditNoteUID) {
+	public InputStream exportCreditNotePDF(UID creditNoteUID) {
 		try {
-			billy.exportCreditNotePDF(creditNoteUID);
+			return billy.exportCreditNotePDF(creditNoteUID);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return null;
 	}
 
 	public PTCustomer endCustomer() {

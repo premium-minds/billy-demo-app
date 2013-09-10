@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import com.premiumminds.billy.core.services.UID;
 import com.premiumminds.billy.portugal.services.entities.PTProduct;
 
 import dummyApp.app.AppManager;
@@ -20,7 +21,7 @@ public class CreateProductCLI {
 
 	public PTProduct createProduct() {
 
-		String description, productCode, unitOfMeasure;
+		String description, productCode, unitOfMeasure, iva;
 
 		try {
 			System.out.println("Description:");
@@ -29,19 +30,33 @@ public class CreateProductCLI {
 			productCode = bufferReader.readLine();
 			System.out.println("Unit of Measure:");
 			unitOfMeasure = bufferReader.readLine();
+			System.out.println("IVA: (6/13/23)");
+			iva = bufferReader.readLine();			
 
 			if (description.equals("")) {
-				description = "Desconhecido";
+				description = "Delta Café";
 			}
 			if (productCode.equals("")) {
-				productCode = "Desconhecido";
+				productCode = "56012345667";
 			}
 			if (unitOfMeasure.equals("")) {
-				unitOfMeasure = "Desconhecido";
+				unitOfMeasure = "Kg";
+			}
+			if(iva.equals("")) {
+				iva = "23";
+			}
+			
+			UID tax;
+			if(iva.equals("23")) {
+				tax = manager.getTaxes().continent().normal().getUID();
+			} else if(iva.equals("13")) {
+				tax = manager.getTaxes().continent().intermediate().getUID();
+			} else {
+				tax = manager.getTaxes().continent().reduced().getUID();
 			}
 
 			PTProduct product = manager.createProduct(productCode, description,
-					unitOfMeasure);
+					unitOfMeasure, tax);
 
 			if (product == null) {
 				System.out.println("Something went wrong");
