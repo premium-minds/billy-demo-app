@@ -33,39 +33,51 @@ public class CreateCustomerCLI {
 		try {
 			System.out.println("Name:");
 			name = bufferReader.readLine();
+			if (name.equals("")) {
+				name = "John Conner";
+				System.out.println("Name: " + name);
+			}
+			
 			System.out.println("Tax Registration Number:");
 			taxNumber = bufferReader.readLine();
-			System.out.println("Street name:");
-			street = bufferReader.readLine();
-			System.out.println("Door number:");
-			number = bufferReader.readLine();
-			System.out.println("Postal Code:");
-			postalCode = bufferReader.readLine();
-			System.out.println("City:");
-			city = bufferReader.readLine();
-			System.out.println("Telephone:");
-			telephone = bufferReader.readLine();
-
-			if (name.equals("")) {
-				name = "Hugo";
-			}
 			if (taxNumber.equals("")) {
 				taxNumber = "123456789";
+				System.out.println("Tax Number: " + taxNumber);
 			}
+			
+			System.out.println("Street name:");
+			street = bufferReader.readLine();
 			if (street.equals("")) {
 				street = "Via Aurélia";
+				System.out.println("Street: " + street);
 			}
+			
+			System.out.println("Door number:");
+			number = bufferReader.readLine();
 			if (number.equals("")) {
 				number = "654";
+				System.out.println("Door Number: " + number);
 			}
+			
+			System.out.println("Postal Code:");
+			postalCode = bufferReader.readLine();
 			if (postalCode.equals("")) {
 				postalCode = "0001-001";
+				System.out.println("Postal Code: " + postalCode);
 			}
+			
+			System.out.println("City:");
+			city = bufferReader.readLine();
 			if (city.equals("")) {
 				city = "Sena";
+				System.out.println("City: " + city);
 			}
+			
+			System.out.println("Telephone:");
+			telephone = bufferReader.readLine();
 			if (telephone.equals("")) {
 				telephone = "987523146";
+				System.out.println("Telephone: " + telephone);
 			}
 
 			PTCustomer customer = manager.createCustomer(name, taxNumber,
