@@ -136,7 +136,7 @@ public class AppManager {
 				.setNumber(number)
 				.setPostalCode(postalCode)
 				.setCity(city)
-				.setISOCountry(COUNTRY)
+				.setISOCountry(COUNTRY_CODE)
 				.setDetails(
 						street + " nr " + number + " " + postalCode + " "
 								+ city);
@@ -174,7 +174,7 @@ public class AppManager {
 
 		builder.setDescription(description).setNumberCode(productCode)
 				.setProductCode(productCode).setType(ProductType.GOODS)
-				.setUnitOfMeasure(unitOfMeasure)
+				.setUnitOfMeasure(unitOfMeasure).setProductGroup("Group")
 				.addTaxUID(tax);
 
 		billy.persistProduct(builder);
