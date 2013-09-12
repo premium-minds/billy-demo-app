@@ -30,8 +30,8 @@ public class Billy {
 	public static final String INVOICE_XSL_PATH = "src/main/resources/templates/pt_invoice.xsl";
 	public static final String CREDIT_NOTE_XSL_PATH = "src/main/resources/templates/pt_creditnote.xsl";
 	public static final String SIMPLE_INVOICE_XSL_PATH = "src/main/resources/templates/pt_simpleinvoice.xsl";
-	public static final String RESULT_PATH = "src/main/resources/export/Result.pdf";
-	public static final String SAFT_RESULT_PATH = "src/main/resources/export/saft.xml";
+	public static final String RESULT_PATH = "/tmp/Result.pdf";
+	public static final String SAFT_RESULT_PATH = "/tmp/saft.xml";
 	public static final String LOGO_PATH = "src/main/resources/logoBig.png";
 	public Injector injector;
 	public BillyPortugal billyPortugal;

@@ -27,43 +27,58 @@ public class CreateBusinessCLI {
 		try {
 			System.out.println("Name:");
 			name = bufferReader.readLine();
+			if (name.equals("")) {
+				name = "Business";
+				System.out.println("Name: " + name);
+			}
+			
 			System.out.println("Tax Registration Number:");
 			taxNumber = bufferReader.readLine();
+			if (taxNumber.equals("")) {
+				taxNumber = "500003564";
+				System.out.println("Tax Number: " + taxNumber);
+			}
+			
 			System.out.println("Street name:");
 			street = bufferReader.readLine();
-			System.out.println("Door number:");
-			number = bufferReader.readLine();
-			System.out.println("Postal Code:");
-			postalCode = bufferReader.readLine();
-			System.out.println("City:");
-			city = bufferReader.readLine();
-			System.out.println("Telephone:");
-			telephone = bufferReader.readLine();
-			System.out.println("Create App:");
-			app = bufferReader.readLine();
-			PTApplication.Builder appbuilder;
-
-			if (name.equals("")) {
-				name = "Exemplo";
-			}
-			if (taxNumber.equals("")) {
-				taxNumber = "123456789";
-			}
 			if (street.equals("")) {
 				street = "Via Ápia";
+				System.out.println("Street: " + street);
 			}
+			
+			System.out.println("Door number:");
+			number = bufferReader.readLine();
 			if (number.equals("")) {
 				number = "999";
+				System.out.println("Door Number: " + number);
 			}
+			
+			System.out.println("Postal Code:");
+			postalCode = bufferReader.readLine();
 			if (postalCode.equals("")) {
 				postalCode = "0000-001";
+				System.out.println("Postal Code: " + postalCode);
 			}
+			
+			System.out.println("City:");
+			city = bufferReader.readLine();
 			if (city.equals("")) {
 				city = "Olissipo";
+				System.out.println("Olissipo: " + city);
 			}
+			
+			System.out.println("Telephone:");
+			telephone = bufferReader.readLine();
 			if (telephone.equals("")) {
 				telephone = "978548961";
+				System.out.println("Telephone: " + telephone);
 			}
+			
+			System.out.println("Create App:");
+			app = bufferReader.readLine();
+			
+			PTApplication.Builder appbuilder;
+
 			if (app.equals("y")) {
 				appbuilder = manager.createApplication();
 			} else {
