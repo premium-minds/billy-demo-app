@@ -63,6 +63,7 @@ public class CreateSimpleInvoiceCLI {
 					manager.getAppCLI().getCustomers().add(customer);
 				}
 				type = CLIENTTYPE.CUSTOMER;
+				System.out.println("Customer Name: " + customer.getName());
 			} else {
 				String answer;
 				customer = (PTCustomerEntity) manager.getAppCLI()

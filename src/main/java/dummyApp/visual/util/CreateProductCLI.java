@@ -26,24 +26,30 @@ public class CreateProductCLI {
 		try {
 			System.out.println("Description:");
 			description = bufferReader.readLine();
+			if (description.equals("")) {
+				description = "Product";
+				System.out.println("Description: " + description);
+			}
+			
 			System.out.println("Product Code:");
 			productCode = bufferReader.readLine();
+			if (productCode.equals("")) {
+				productCode = "1";
+				System.out.println("Product Code: " + productCode);
+			}
+			
 			System.out.println("Unit of Measure:");
 			unitOfMeasure = bufferReader.readLine();
-			System.out.println("IVA: (6/13/23)");
-			iva = bufferReader.readLine();			
-
-			if (description.equals("")) {
-				description = "Delta Café";
-			}
-			if (productCode.equals("")) {
-				productCode = "56012345667";
-			}
 			if (unitOfMeasure.equals("")) {
 				unitOfMeasure = "Kg";
+				System.out.println("Unit of Measure: " + unitOfMeasure);
 			}
+			
+			System.out.println("IVA: (6/13/23)");
+			iva = bufferReader.readLine();			
 			if(iva.equals("")) {
 				iva = "23";
+				System.out.println("IVA: " + iva);
 			}
 			
 			UID tax;
