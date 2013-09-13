@@ -19,7 +19,7 @@ import dummyApp.visual.DummyAppCLI;
  * 
  */
 public class App {
-	public static final String PRIVATE_KEY_DIR = "src/main/resources/private.pem";
+	public static final String PRIVATE_KEY_DIR = "/private.pem";
 	public static BillyPortugal billyPortugal;
 	public static Injector injector;
 

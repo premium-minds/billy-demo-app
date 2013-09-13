@@ -27,12 +27,15 @@ import com.premiumminds.billy.portugal.services.export.pdf.simpleinvoice.PTSimpl
 
 public class Billy {
 
-	public static final String INVOICE_XSL_PATH = "src/main/resources/templates/pt_invoice.xsl";
-	public static final String CREDIT_NOTE_XSL_PATH = "src/main/resources/templates/pt_creditnote.xsl";
-	public static final String SIMPLE_INVOICE_XSL_PATH = "src/main/resources/templates/pt_simpleinvoice.xsl";
-	public static final String RESULT_PATH = "/tmp/Result.pdf";
-	public static final String SAFT_RESULT_PATH = "/tmp/saft.xml";
-	public static final String LOGO_PATH = "src/main/resources/logoBig.png";
+	public static final String INVOICE_XSL_PATH = "/templates/pt_invoice.xsl";
+	public static final String CREDIT_NOTE_XSL_PATH = "/templates/pt_creditnote.xsl";
+	public static final String SIMPLE_INVOICE_XSL_PATH = "/templates/pt_simpleinvoice.xsl";
+	public static final String RESULT_PATH = System
+			.getProperty("java.io.tmpdir") + "/Result.pdf";
+	public static final String SAFT_RESULT_PATH = System
+			.getProperty("java.io.tmpdir") + "/saft.xml";
+	public static final String LOGO_PATH = System
+			.getProperty("java.io.tmpdir") + "/logoBig.png";
 	public Injector injector;
 	public BillyPortugal billyPortugal;
 	public PTIssuingParams parameters;
@@ -69,39 +72,41 @@ public class Billy {
 		billyPortugal.creditNotes().issue(creditNote, params);
 	}
 
-	public InputStream exportSaft(UID appUID, UID businessUID, Date from, Date to)
-			throws IOException, SAFTPTExportException {
-		return billyPortugal.saft().export(appUID, businessUID, "12",
-				from, to, SAFT_RESULT_PATH);
+	public InputStream exportSaft(UID appUID, UID businessUID, Date from,
+			Date to) throws IOException, SAFTPTExportException {
+		return billyPortugal.saft().export(appUID, businessUID, "12", from, to,
+				SAFT_RESULT_PATH);
 	}
 
 	public InputStream exportInvoicePDF(UID invoiceUID) throws IOException,
 			SAFTPTExportException, ExportServiceException {
-		InputStream xsl = new FileInputStream(Billy.INVOICE_XSL_PATH);
+		InputStream xsl = this.getClass().getResourceAsStream(Billy.INVOICE_XSL_PATH);
 		PTInvoiceTemplateBundle bundle = new PTInvoiceTemplateBundle(
 				Billy.LOGO_PATH, xsl, "12");
 		return billyPortugal.invoices().pdfExport(
 				new PTInvoicePDFExportRequest(invoiceUID, bundle, RESULT_PATH));
 	}
 
-	public InputStream exportSimpleInvoicePDF(UID simpleInvoiceUID) throws IOException,
-			SAFTPTExportException, ExportServiceException {
-		InputStream xsl = new FileInputStream(Billy.SIMPLE_INVOICE_XSL_PATH);
+	public InputStream exportSimpleInvoicePDF(UID simpleInvoiceUID)
+			throws IOException, SAFTPTExportException, ExportServiceException {
+		InputStream xsl = this.getClass().getResourceAsStream(Billy.SIMPLE_INVOICE_XSL_PATH);
 		PTSimpleInvoiceTemplateBundle bundle = new PTSimpleInvoiceTemplateBundle(
 				Billy.LOGO_PATH, xsl, "12");
 		return billyPortugal.simpleInvoices().pdfExport(
-				new PTSimpleInvoicePDFExportRequest(simpleInvoiceUID, bundle, RESULT_PATH));
+				new PTSimpleInvoicePDFExportRequest(simpleInvoiceUID, bundle,
+						RESULT_PATH));
 	}
 
 	public InputStream exportCreditNotePDF(UID invoiceUID) throws IOException,
 			SAFTPTExportException, ExportServiceException {
-		InputStream xsl = new FileInputStream(Billy.CREDIT_NOTE_XSL_PATH);
+		InputStream xsl = this.getClass().getResourceAsStream(Billy.CREDIT_NOTE_XSL_PATH);
 		PTCreditNoteTemplateBundle bundle = new PTCreditNoteTemplateBundle(
 				Billy.LOGO_PATH, xsl, "12");
 		return billyPortugal.creditNotes().pdfExport(
-				new PTCreditNotePDFExportRequest(invoiceUID, bundle, RESULT_PATH));
+				new PTCreditNotePDFExportRequest(invoiceUID, bundle,
+						RESULT_PATH));
 	}
-	
+
 	public PTCustomer endConsumer() {
 		return billyPortugal.customers().endConsumer();
 	}
