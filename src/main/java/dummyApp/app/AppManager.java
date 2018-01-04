@@ -1,5 +1,6 @@
 package dummyApp.app;
 
+import com.premiumminds.billy.core.util.PaymentMechanism;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -40,7 +41,6 @@ import com.premiumminds.billy.portugal.services.entities.PTSimpleInvoice;
 import com.premiumminds.billy.portugal.services.entities.PTSimpleInvoice.CLIENTTYPE;
 import com.premiumminds.billy.portugal.services.export.exceptions.SAFTPTExportException;
 import com.premiumminds.billy.portugal.util.KeyGenerator;
-import com.premiumminds.billy.portugal.util.PaymentMechanism;
 import com.premiumminds.billy.portugal.util.Taxes;
 
 import dummyApp.persistence.Billy;

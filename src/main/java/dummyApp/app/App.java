@@ -27,7 +27,7 @@ public class App {
 			DocumentIssuingException, IOException, SAFTPTExportException {
 
 		injector = Guice.createInjector(new PortugalDependencyModule(),
-				new PortugalPersistenceDependencyModule());
+				new PortugalPersistenceDependencyModule("application-persistence-unit"));
 		injector.getInstance(PortugalDependencyModule.Initializer.class);
 		injector.getInstance(PortugalPersistenceDependencyModule.Initializer.class);
 		PortugalBootstrap.execute(injector);

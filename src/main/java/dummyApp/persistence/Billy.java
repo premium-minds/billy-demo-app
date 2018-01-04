@@ -1,5 +1,6 @@
 package dummyApp.persistence;
 
+import com.premiumminds.billy.portugal.services.export.saftpt.PTSAFTFileGenerator;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,7 +76,7 @@ public class Billy {
 	public InputStream exportSaft(UID appUID, UID businessUID, Date from,
 			Date to) throws IOException, SAFTPTExportException {
 		return billyPortugal.saft().export(appUID, businessUID, "12", from, to,
-				SAFT_RESULT_PATH);
+				PTSAFTFileGenerator.SAFTVersion.CURRENT);
 	}
 
 	public InputStream exportInvoicePDF(UID invoiceUID) throws IOException,
