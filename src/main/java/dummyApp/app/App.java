@@ -35,5 +35,6 @@ public class App {
 		DummyAppCLI cli = new DummyAppCLI(injector);
 		cli.start();
 
+		System.exit(0);
 	}
 }
