@@ -49,7 +49,6 @@ import dummyApp.visual.DummyAppCLI;
 public class AppManager {
 
 	public static final String COUNTRY_CODE = "PT";
-	public static final String COUNTRY = "Portugal";
 	private Injector injector;
 	private BillyPortugal billyPortugal;
 	private Billy billy;

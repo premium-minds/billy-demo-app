@@ -37,24 +37,15 @@ public class DummyAppCLI {
 	List<PTSimpleInvoice> simpleInvoices;
 	List<PTCreditNote> creditNotes;
 
-	public DummyAppCLI() {
-		products = new ArrayList<PTProduct>();
-		customers = new ArrayList<PTCustomer>();
-		businesses = new ArrayList<PTBusiness>();
-		invoices = new ArrayList<PTInvoice>();
-		simpleInvoices = new ArrayList<PTSimpleInvoice>();
-		creditNotes = new ArrayList<PTCreditNote>();
-	}
-
 	public DummyAppCLI(Injector injector) {
 		this.injector = injector;
 		manager = new AppManager(injector);
-		products = new ArrayList<PTProduct>();
-		customers = new ArrayList<PTCustomer>();
-		businesses = new ArrayList<PTBusiness>();
-		invoices = new ArrayList<PTInvoice>();
-		simpleInvoices = new ArrayList<PTSimpleInvoice>();
-		creditNotes = new ArrayList<PTCreditNote>();
+		products = new ArrayList<>();
+		customers = new ArrayList<>();
+		businesses = new ArrayList<>();
+		invoices = new ArrayList<>();
+		simpleInvoices = new ArrayList<>();
+		creditNotes = new ArrayList<>();
 		manager.setAppCLI(this);
 	}
 
@@ -218,9 +209,6 @@ public class DummyAppCLI {
 			} catch (NumberFormatException e) {
 				System.out.println("Invalid option");
 			}
-
 		}
-
 	}
-
 }

@@ -1,11 +1,5 @@
 package dummyApp.persistence;
 
-import com.premiumminds.billy.portugal.services.export.saftpt.PTSAFTFileGenerator;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
-
 import com.google.inject.Injector;
 import com.premiumminds.billy.core.services.UID;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
@@ -25,6 +19,11 @@ import com.premiumminds.billy.portugal.services.export.pdf.invoice.PTInvoicePDFE
 import com.premiumminds.billy.portugal.services.export.pdf.invoice.PTInvoiceTemplateBundle;
 import com.premiumminds.billy.portugal.services.export.pdf.simpleinvoice.PTSimpleInvoicePDFExportRequest;
 import com.premiumminds.billy.portugal.services.export.pdf.simpleinvoice.PTSimpleInvoiceTemplateBundle;
+import com.premiumminds.billy.portugal.services.export.saftpt.PTSAFTFileGenerator;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 
 public class Billy {
 
@@ -39,7 +38,6 @@ public class Billy {
 			.getProperty("java.io.tmpdir") + "/logoBig.png";
 	public Injector injector;
 	public BillyPortugal billyPortugal;
-	public PTIssuingParams parameters;
 
 	public Billy(Injector injector, BillyPortugal billyPortugal) {
 		this.injector = injector;
