@@ -27,13 +27,12 @@ import java.util.Date;
 
 public class Billy {
 
+	public static final String SOFTWARE_CERTIFICATION = "12";
 	public static final String INVOICE_XSL_PATH = "/templates/pt_invoice.xsl";
 	public static final String CREDIT_NOTE_XSL_PATH = "/templates/pt_creditnote.xsl";
 	public static final String SIMPLE_INVOICE_XSL_PATH = "/templates/pt_simpleinvoice.xsl";
 	public static final String RESULT_PATH = System
 			.getProperty("java.io.tmpdir") + "/Result.pdf";
-	public static final String SAFT_RESULT_PATH = System
-			.getProperty("java.io.tmpdir") + "/saft.xml";
 	public static final String LOGO_PATH = System
 			.getProperty("java.io.tmpdir") + "/logoBig.png";
 	public Injector injector;
@@ -73,7 +72,7 @@ public class Billy {
 
 	public InputStream exportSaft(UID appUID, UID businessUID, Date from,
 			Date to) throws IOException, SAFTPTExportException {
-		return billyPortugal.saft().export(appUID, businessUID, "12", from, to,
+		return billyPortugal.saft().export(appUID, businessUID, SOFTWARE_CERTIFICATION, from, to,
 				PTSAFTFileGenerator.SAFTVersion.CURRENT);
 	}
 
@@ -81,7 +80,7 @@ public class Billy {
 			SAFTPTExportException, ExportServiceException {
 		InputStream xsl = this.getClass().getResourceAsStream(Billy.INVOICE_XSL_PATH);
 		PTInvoiceTemplateBundle bundle = new PTInvoiceTemplateBundle(
-				Billy.LOGO_PATH, xsl, "12");
+				Billy.LOGO_PATH, xsl, SOFTWARE_CERTIFICATION);
 		return billyPortugal.invoices().pdfExport(
 				new PTInvoicePDFExportRequest(invoiceUID, bundle, RESULT_PATH));
 	}
@@ -90,7 +89,7 @@ public class Billy {
 			throws IOException, SAFTPTExportException, ExportServiceException {
 		InputStream xsl = this.getClass().getResourceAsStream(Billy.SIMPLE_INVOICE_XSL_PATH);
 		PTSimpleInvoiceTemplateBundle bundle = new PTSimpleInvoiceTemplateBundle(
-				Billy.LOGO_PATH, xsl, "12");
+				Billy.LOGO_PATH, xsl, SOFTWARE_CERTIFICATION);
 		return billyPortugal.simpleInvoices().pdfExport(
 				new PTSimpleInvoicePDFExportRequest(simpleInvoiceUID, bundle,
 						RESULT_PATH));
@@ -100,7 +99,7 @@ public class Billy {
 			SAFTPTExportException, ExportServiceException {
 		InputStream xsl = this.getClass().getResourceAsStream(Billy.CREDIT_NOTE_XSL_PATH);
 		PTCreditNoteTemplateBundle bundle = new PTCreditNoteTemplateBundle(
-				Billy.LOGO_PATH, xsl, "12");
+				Billy.LOGO_PATH, xsl, SOFTWARE_CERTIFICATION);
 		return billyPortugal.creditNotes().pdfExport(
 				new PTCreditNotePDFExportRequest(invoiceUID, bundle,
 						RESULT_PATH));

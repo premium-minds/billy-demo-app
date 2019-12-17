@@ -3,22 +3,32 @@ billy-demo-app
 
 # How to use
 
-## create database
+## Create database
 ```
 createdb -h localhost -U postgres billy-demo
 ```
 
-## compile jar file
+## Compile jar file
 ```
 mvn package 
 ```
 
-## execute jar file
+## Execute jar file
 ```
-java -jar target/DummyApp-0.0.1-SNAPSHOT.jar
+java -jar target/DummyApp.jar
 ```
 
-## alternatively execute directly from maven
+## Alternatively execute directly from maven
 ```
 mvn exec:java -Dexec.mainClass="dummyApp.app.App" 
 ```
+
+## Single Invoice Demonstration with SAFT and PDF export
+ ```
+ java -jar target/DummyApp.jar demo
+ ```
+or
+```
+mvn exec:java -Dexec.mainClass="dummyApp.app.App" -Dexec.args="demo"
+```
+will create a _saft.xml_ and a _invoice*pdf_
