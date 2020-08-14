@@ -290,7 +290,7 @@ public class DemoApp {
 		PTInvoiceTemplateBundle templateBundle = new PTInvoiceTemplateBundle(Billy.LOGO_PATH, xslInputStream,
 				application.getSoftwareCertificationNumber().toString());
 
-		String resultPath = new SimpleDateFormat("'invoice_'yyyy-MM-dd'T'hh:mm:ss'.pdf'").format(new Date());
+		String resultPath = new SimpleDateFormat("'invoice_'yyyy-MM-dd'T'HH:mm:ss'.pdf'").format(new Date());
 		billyPortugal.invoices().pdfExport(
 				new PTInvoicePDFExportRequest(invoice.getUID(), templateBundle, resultPath));
 	}
@@ -306,7 +306,7 @@ public class DemoApp {
 		PTCreditNoteTemplateBundle templateBundle = new PTCreditNoteTemplateBundle(Billy.LOGO_PATH, xslInputStream,
 				application.getSoftwareCertificationNumber().toString());
 
-		String resultPath = new SimpleDateFormat("'creditNote_'yyyy-MM-dd'T'hh:mm:ss'.pdf'").format(new Date());
+		String resultPath = new SimpleDateFormat("'creditNote_'yyyy-MM-dd'T'HH:mm:ss'.pdf'").format(new Date());
 		billyPortugal.creditNotes().pdfExport(
 				new PTCreditNotePDFExportRequest(creditNote.getUID(), templateBundle, resultPath));
 	}
