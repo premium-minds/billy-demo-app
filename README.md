@@ -31,4 +31,4 @@ or
 ```
 mvn exec:java -Dexec.mainClass="dummyApp.app.App" -Dexec.args="demo"
 ```
-will create a _saft.xml_ and a _invoice*pdf_
+will create a _saft.xml_, a _invoice*pdf_ and a _creditNote*pdf_
