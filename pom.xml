@@ -21,7 +21,7 @@
         <dependency>
             <groupId>com.premiumminds</groupId>
             <artifactId>billy-portugal</artifactId>
-            <version>3.3.0</version>
+            <version>3.3.1</version>
         </dependency>
 
         <dependency>
