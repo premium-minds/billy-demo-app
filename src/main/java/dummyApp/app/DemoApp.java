@@ -272,7 +272,6 @@ public class DemoApp {
 			throws SAFTPTExportException, IOException {
 		billyPortugal.saft().export(application.getUID(),
 				business.getUID(),
-				application.getSoftwareCertificationNumber().toString(),
 				startDate,
 				endDate,
 				"saft.xml",
