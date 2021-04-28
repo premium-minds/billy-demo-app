@@ -1,0 +1,17 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.hibernate:hibernate-validator
+    versions:
+    - ">= 6.a, < 7"
+  - dependency-name: org.glassfish:jakarta.el
+    versions:
+    - 4.0.1
+  - dependency-name: org.hibernate.validator:hibernate-validator
+    versions:
+    - 7.0.1.Final
