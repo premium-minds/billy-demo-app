@@ -14,8 +14,10 @@ import java.util.Currency;
 import java.util.Date;
 
 import com.google.inject.Injector;
+import com.premiumminds.billy.core.services.UID;
 import com.premiumminds.billy.core.services.builders.GenericInvoiceEntryBuilder;
 import com.premiumminds.billy.core.services.entities.Product;
+import com.premiumminds.billy.core.services.entities.Tax;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
 import com.premiumminds.billy.gin.services.exceptions.ExportServiceException;
 import com.premiumminds.billy.portugal.BillyPortugal;
@@ -31,6 +33,7 @@ import com.premiumminds.billy.portugal.services.entities.PTGenericInvoice;
 import com.premiumminds.billy.portugal.services.entities.PTInvoice;
 import com.premiumminds.billy.portugal.services.entities.PTInvoiceEntry;
 import com.premiumminds.billy.portugal.services.entities.PTProduct;
+import com.premiumminds.billy.portugal.services.entities.PTTax;
 import com.premiumminds.billy.portugal.services.export.exceptions.SAFTPTExportException;
 import com.premiumminds.billy.portugal.services.export.pdf.creditnote.PTCreditNotePDFExportRequest;
 import com.premiumminds.billy.portugal.services.export.pdf.creditnote.PTCreditNoteTemplateBundle;
@@ -63,8 +66,13 @@ public class DemoApp {
 		PTApplication application = createPtApplication(billyPortugal, applicationBuilder);
 		PTBusiness business = createPtBusiness(billyPortugal, applicationBuilder);
 		PTCustomer customer = createPtCustomer(billyPortugal);
+
+		final PTTax flatTax = createFlatTax(billyPortugal);
+
 		PTProduct product = createPtProduct(billyPortugal);
-		PTInvoice invoice = createPtInvoice(dateFormat, billyPortugal, business, invoiceParameters, customer, product);
+		PTProduct productExempt = createPtProductExempt(billyPortugal);
+		PTProduct productFlat = createPtProductFlat(billyPortugal, flatTax);
+		PTInvoice invoice = createPtInvoice(dateFormat, billyPortugal, business, invoiceParameters, customer, product, productExempt, productFlat);
 		PTCreditNote creditNote = createPtCreditNote(dateFormat,
                 billyPortugal,
                 business,
@@ -80,6 +88,19 @@ public class DemoApp {
 
 		exportInvoicePDF(billyPortugal, application, invoice);
 		exportCreditNotePDF(billyPortugal, application, creditNote);
+	}
+
+	private PTTax createFlatTax(BillyPortugal billyPortugal) {
+		final PTTax.Builder taxBuilder = this.injector.getInstance(PTTax.Builder.class);
+		taxBuilder.setTaxRate(Tax.TaxRateType.FLAT, new BigDecimal("3.14"))
+				.setContextUID(UID.fromString("cff9a2f4-cd1d-4786-95c4-78b167a00d2b"))
+				.setCode("code1")
+				.setDescription("description 1")
+				.setValidFrom(new Date(0))
+				.setCurrency(Currency.getInstance("EUR"))
+				.setValue(new BigDecimal("5.55"));
+
+		return billyPortugal.taxes().persistence().create(taxBuilder);
 	}
 
 	private PTApplication.Builder getPTApplicationBuilder(BillyPortugal billyPortugal) throws MalformedURLException {
@@ -134,7 +155,9 @@ public class DemoApp {
                                       PTBusiness business,
                                       PTIssuingParams invoiceParameters,
                                       PTCustomer customer,
-									  PTProduct product) throws ParseException, DocumentIssuingException {
+                                      PTProduct product,
+                                      PTProduct productExempt,
+									  PTProduct productTax) throws ParseException, DocumentIssuingException {
 		PTInvoice.Builder invoiceBuilder = billyPortugal.invoices().builder();
 
 		Date invoiceDate = dateFormat.parse("01-03-2013");
@@ -148,9 +171,8 @@ public class DemoApp {
 				.setCustomerUID(customer.getUID());
 
 		PTInvoiceEntry.Builder entryBuilder = billyPortugal.invoices().entryBuilder();
-		entryBuilder.setAmountType(GenericInvoiceEntryBuilder.AmountType.WITH_TAX)
+		entryBuilder
 				.setCurrency(Currency.getInstance("EUR"))
-				.setContextUID(billyPortugal.contexts().portugal().allRegions().getUID())
 				.setQuantity(new BigDecimal("10"))
 				.setTaxPointDate(dateFormat.parse("01-02-2013"))
 				.setUnitAmount(GenericInvoiceEntryBuilder.AmountType.WITH_TAX, new BigDecimal("100"))
@@ -158,6 +180,36 @@ public class DemoApp {
 				.setProductUID(product.getUID())
 				.setDescription(product.getDescription())
 				.setUnitOfMeasure(product.getUnitOfMeasure());
+
+		invoiceBuilder.addEntry(entryBuilder);
+
+		entryBuilder = billyPortugal.invoices().entryBuilder();
+		entryBuilder
+				.setCurrency(Currency.getInstance("EUR"))
+				.setQuantity(new BigDecimal("10.0"))
+				.setTaxPointDate(dateFormat.parse("01-02-2013"))
+				.setUnitAmount(GenericInvoiceEntryBuilder.AmountType.WITH_TAX, new BigDecimal("100"))
+				.setContextUID(billyPortugal.contexts().continent().allContinentRegions().getUID())
+				.setProductUID(productExempt.getUID())
+				.setDescription(productExempt.getDescription())
+				.setUnitOfMeasure(productExempt.getUnitOfMeasure())
+				.setTaxExemptionCode("M99")
+				.setTaxExemptionReason("reason 1");
+
+		invoiceBuilder.addEntry(entryBuilder);
+
+		entryBuilder = billyPortugal.invoices().entryBuilder();
+		entryBuilder
+				.setCurrency(Currency.getInstance("EUR"))
+				.setQuantity(new BigDecimal("10.0"))
+				.setTaxPointDate(dateFormat.parse("01-02-2013"))
+				.setUnitAmount(GenericInvoiceEntryBuilder.AmountType.WITH_TAX, new BigDecimal("100"))
+				.setContextUID(billyPortugal.contexts().continent().allContinentRegions().getUID())
+				.setProductUID(productTax.getUID())
+				.setDescription(productTax.getDescription())
+				.setUnitOfMeasure(productTax.getUnitOfMeasure())
+				.setTaxExemptionCode("M99")
+				.setTaxExemptionReason("reason 1");
 
 		invoiceBuilder.addEntry(entryBuilder);
 
@@ -211,6 +263,32 @@ public class DemoApp {
 				.setUnitOfMeasure("kg")
 				.setProductGroup("group 1")
 				.addTaxUID(billyPortugal.taxes().continent().normal().getUID());
+
+		return billyPortugal.products().persistence().create(productBuilder);
+	}
+
+	private PTProduct createPtProductExempt(BillyPortugal billyPortugal) {
+		PTProduct.Builder productBuilder = billyPortugal.products().builder();
+		productBuilder.setDescription("product 2")
+				.setNumberCode("2")
+				.setProductCode("2")
+				.setType(Product.ProductType.GOODS)
+				.setUnitOfMeasure("kg")
+				.setProductGroup("group 1")
+				.addTaxUID(billyPortugal.taxes().exempt().getUID());
+
+		return billyPortugal.products().persistence().create(productBuilder);
+	}
+
+	private PTProduct createPtProductFlat(BillyPortugal billyPortugal, PTTax flatTax) {
+		PTProduct.Builder productBuilder = billyPortugal.products().builder();
+		productBuilder.setDescription("product 3")
+				.setNumberCode("3")
+				.setProductCode("3")
+				.setType(Product.ProductType.GOODS)
+				.setUnitOfMeasure("kg")
+				.setProductGroup("group 1")
+				.addTaxUID(flatTax.getUID());
 
 		return billyPortugal.products().persistence().create(productBuilder);
 	}
@@ -275,7 +353,7 @@ public class DemoApp {
 				startDate,
 				endDate,
 				"saft.xml",
-				PTSAFTFileGenerator.SAFTVersion.CURRENT);
+				PTSAFTFileGenerator.SAFTVersion.CURRENT, true);
 	}
 
 	private void exportInvoicePDF(BillyPortugal billyPortugal,
