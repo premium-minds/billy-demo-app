@@ -73,7 +73,7 @@ public class Billy {
 
 	public InputStream exportSaft(UID appUID, UID businessUID, Date from,
 			Date to) throws IOException, SAFTPTExportException {
-		return billyPortugal.saft().export(appUID, businessUID, SOFTWARE_CERTIFICATION.toString(), from, to,
+		return billyPortugal.saft().export(appUID, businessUID, from, to,
 				PTSAFTFileGenerator.SAFTVersion.CURRENT);
 	}
 
