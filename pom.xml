@@ -14,6 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <hibernate.version>5.6.11.Final</hibernate.version>
+        <billy.version>5.4.2</billy.version>
     </properties>
 
     <dependencies>
@@ -21,7 +22,12 @@
         <dependency>
             <groupId>com.premiumminds</groupId>
             <artifactId>billy-portugal</artifactId>
-            <version>5.4.2</version>
+            <version>${billy.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.premiumminds</groupId>
+            <artifactId>billy-spain</artifactId>
+            <version>${billy.version}</version>
         </dependency>
 
         <dependency>

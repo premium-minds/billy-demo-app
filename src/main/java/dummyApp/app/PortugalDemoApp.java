@@ -14,7 +14,6 @@ import java.util.Currency;
 import java.util.Date;
 
 import com.google.inject.Injector;
-import com.premiumminds.billy.core.services.UID;
 import com.premiumminds.billy.core.services.builders.GenericInvoiceEntryBuilder;
 import com.premiumminds.billy.core.services.entities.Product;
 import com.premiumminds.billy.core.services.entities.Tax;
@@ -43,10 +42,10 @@ import com.premiumminds.billy.portugal.services.export.saftpt.PTSAFTFileGenerato
 import com.premiumminds.billy.portugal.util.KeyGenerator;
 import dummyApp.persistence.Billy;
 
-public class DemoApp {
+public class PortugalDemoApp {
 	private final Injector injector;
 
-	public DemoApp(Injector injector) {
+	public PortugalDemoApp(Injector injector) {
 		this.injector = injector;
 	}
 
@@ -93,7 +92,7 @@ public class DemoApp {
 	private PTTax createFlatTax(BillyPortugal billyPortugal) {
 		final PTTax.Builder taxBuilder = this.injector.getInstance(PTTax.Builder.class);
 		taxBuilder.setTaxRate(Tax.TaxRateType.FLAT, new BigDecimal("3.14"))
-				.setContextUID(UID.fromString("cff9a2f4-cd1d-4786-95c4-78b167a00d2b"))
+				.setContextUID(billyPortugal.contexts().continent().allContinentRegions().getUID())
 				.setCode("code1")
 				.setDescription("description 1")
 				.setValidFrom(new Date(0))
@@ -238,7 +237,6 @@ public class DemoApp {
 		PTCreditNoteEntry.Builder entryBuilder = billyPortugal.creditNotes().entryBuilder();
 		entryBuilder.setAmountType(GenericInvoiceEntryBuilder.AmountType.WITH_TAX)
 				.setCurrency(Currency.getInstance("EUR"))
-				.setContextUID(billyPortugal.contexts().portugal().allRegions().getUID())
 				.setQuantity(new BigDecimal("10"))
 				.setTaxPointDate(dateFormat.parse("01-02-2013"))
 				.setUnitAmount(GenericInvoiceEntryBuilder.AmountType.WITH_TAX, new BigDecimal("100"))
@@ -367,7 +365,7 @@ public class DemoApp {
 		PTInvoiceTemplateBundle templateBundle = new PTInvoiceTemplateBundle(Billy.LOGO_PATH, xslInputStream,
 				application.getSoftwareCertificationNumber().toString());
 
-		String resultPath = new SimpleDateFormat("'invoice_'yyyy-MM-dd'T'HH:mm:ss'.pdf'").format(new Date());
+		String resultPath = new SimpleDateFormat("'pt_invoice_'yyyy-MM-dd'T'HH:mm:ss'.pdf'").format(new Date());
 		billyPortugal.invoices().pdfExport(
 				new PTInvoicePDFExportRequest(invoice.getUID(), templateBundle, resultPath));
 	}
@@ -383,7 +381,7 @@ public class DemoApp {
 		PTCreditNoteTemplateBundle templateBundle = new PTCreditNoteTemplateBundle(Billy.LOGO_PATH, xslInputStream,
 				application.getSoftwareCertificationNumber().toString());
 
-		String resultPath = new SimpleDateFormat("'creditNote_'yyyy-MM-dd'T'HH:mm:ss'.pdf'").format(new Date());
+		String resultPath = new SimpleDateFormat("'pt_creditNote_'yyyy-MM-dd'T'HH:mm:ss'.pdf'").format(new Date());
 		billyPortugal.creditNotes().pdfExport(
 				new PTCreditNotePDFExportRequest(creditNote.getUID(), templateBundle, resultPath));
 	}

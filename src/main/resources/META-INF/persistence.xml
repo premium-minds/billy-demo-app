@@ -7,6 +7,7 @@
     <persistence-unit name="application-persistence-unit">
         <mapping-file>META-INF/orm-core.xml</mapping-file>
         <mapping-file>META-INF/orm-portugal.xml</mapping-file>
+        <mapping-file>META-INF/orm-spain.xml</mapping-file>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
@@ -14,9 +15,8 @@
             <property name="javax.persistence.jdbc.password" value="postgres" />
             <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/billy-demo" />
 
-            <property name="hibernate.show_sql" value="${persistence.show_sql}" />
             <property name="hibernate.hbm2ddl.auto" value="create-drop" />
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL94Dialect" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL10Dialect" />
         </properties>
     </persistence-unit>
 </persistence>
