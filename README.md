@@ -25,7 +25,7 @@ mvn exec:java -Dexec.mainClass="dummyApp.app.App"
 
 ## Single Invoice Demonstration with SAFT and PDF export
  ```
- java -jar target/DummyApp.jar demo
+java -jar target/DummyApp.jar demo Portugal
  ```
 or
 ```

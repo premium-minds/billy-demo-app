@@ -14,11 +14,14 @@ import java.util.Currency;
 import java.util.Date;
 
 import com.google.inject.Injector;
+import com.premiumminds.billy.core.persistence.dao.DAOInvoiceSeries;
+import com.premiumminds.billy.core.persistence.entities.InvoiceSeriesEntity;
 import com.premiumminds.billy.core.services.builders.GenericInvoiceEntryBuilder;
 import com.premiumminds.billy.core.services.entities.Product;
 import com.premiumminds.billy.core.services.entities.Tax;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
 import com.premiumminds.billy.gin.services.exceptions.ExportServiceException;
+import com.premiumminds.billy.persistence.entities.jpa.JPAInvoiceSeriesEntity;
 import com.premiumminds.billy.portugal.BillyPortugal;
 import com.premiumminds.billy.portugal.services.documents.util.PTIssuingParams;
 import com.premiumminds.billy.portugal.services.entities.PTAddress;
@@ -66,6 +69,9 @@ public class PortugalDemoApp {
 		PTBusiness business = createPtBusiness(billyPortugal, applicationBuilder);
 		PTCustomer customer = createPtCustomer(billyPortugal);
 
+		createSeries(invoiceParameters.getInvoiceSeries(), business, "CCCC2345");
+		createSeries(creditNoteParameters.getInvoiceSeries(), business, "CCCC2346");
+
 		final PTTax flatTax = createFlatTax(billyPortugal);
 
 		PTProduct product = createPtProduct(billyPortugal);
@@ -87,6 +93,15 @@ public class PortugalDemoApp {
 
 		exportInvoicePDF(billyPortugal, application, invoice);
 		exportCreditNotePDF(billyPortugal, application, creditNote);
+	}
+
+	private void createSeries(String series, PTBusiness business, String uniqueCode) {
+		InvoiceSeriesEntity entity = new JPAInvoiceSeriesEntity();
+		entity.setBusiness(business);
+		entity.setSeries(series);
+		entity.setSeriesUniqueCode(uniqueCode);
+		DAOInvoiceSeries daoInvoiceSeries = injector.getInstance(DAOInvoiceSeries.class);
+		daoInvoiceSeries.create(entity);
 	}
 
 	private PTTax createFlatTax(BillyPortugal billyPortugal) {
@@ -294,7 +309,7 @@ public class PortugalDemoApp {
 	private PTIssuingParams getPtInvoiceIssuingParams() {
 		PTIssuingParams invoiceParameters = PTIssuingParams.Util.newInstance();
 
-		KeyGenerator gen = new KeyGenerator(App.PRIVATE_KEY_DIR);
+		KeyGenerator gen = new KeyGenerator(getClass().getResource(App.PRIVATE_KEY_DIR));
 
 		invoiceParameters.setPrivateKey(gen.getPrivateKey());
 		invoiceParameters.setPublicKey(gen.getPublicKey());
@@ -306,7 +321,7 @@ public class PortugalDemoApp {
 	private PTIssuingParams getPtCreditNoteIssuingParams() {
 		PTIssuingParams invoiceParameters = PTIssuingParams.Util.newInstance();
 
-		KeyGenerator gen = new KeyGenerator(App.PRIVATE_KEY_DIR);
+		KeyGenerator gen = new KeyGenerator(getClass().getResource(App.PRIVATE_KEY_DIR));
 
 		invoiceParameters.setPrivateKey(gen.getPrivateKey());
 		invoiceParameters.setPublicKey(gen.getPublicKey());

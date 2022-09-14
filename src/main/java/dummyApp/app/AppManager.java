@@ -67,7 +67,7 @@ public class AppManager {
 		billy = new Billy(this.injector, billyPortugal);
 		application = createApplication();
 		taxes = billyPortugal.taxes();
-		KeyGenerator generator = new KeyGenerator(App.PRIVATE_KEY_DIR);
+		KeyGenerator generator = new KeyGenerator(getClass().getResource(App.PRIVATE_KEY_DIR));
 		parameters = new PTIssuingParamsImpl();
 		parameters.setPrivateKey(generator.getPrivateKey());
 		parameters.setPublicKey(generator.getPublicKey());

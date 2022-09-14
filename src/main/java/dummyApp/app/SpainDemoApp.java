@@ -12,12 +12,15 @@ import java.util.Currency;
 import java.util.Date;
 
 import com.google.inject.Injector;
+import com.premiumminds.billy.core.persistence.dao.DAOInvoiceSeries;
+import com.premiumminds.billy.core.persistence.entities.InvoiceSeriesEntity;
 import com.premiumminds.billy.core.services.builders.GenericInvoiceEntryBuilder;
 import com.premiumminds.billy.core.services.entities.Product;
 import com.premiumminds.billy.core.services.entities.Tax;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
 import com.premiumminds.billy.core.util.PaymentMechanism;
 import com.premiumminds.billy.gin.services.exceptions.ExportServiceException;
+import com.premiumminds.billy.persistence.entities.jpa.JPAInvoiceSeriesEntity;
 import com.premiumminds.billy.spain.BillySpain;
 import com.premiumminds.billy.spain.services.documents.util.ESIssuingParams;
 import com.premiumminds.billy.spain.services.entities.ESAddress;
@@ -60,6 +63,9 @@ public class SpainDemoApp {
 		ESBusiness business = createEsBusiness(billySpain, applicationBuilder);
 		ESCustomer customer = createEsCustomer(billySpain);
 
+		createSeries(invoiceParameters.getInvoiceSeries(), business, "CCCC2345");
+		createSeries(creditNoteParameters.getInvoiceSeries(), business, "CCCC2346");
+
 		final ESTax flatTax = createFlatTax(billySpain);
 
 		ESProduct product = createEsProduct(billySpain);
@@ -76,6 +82,15 @@ public class SpainDemoApp {
 
 		exportInvoicePDF(billySpain, invoice);
 		exportCreditNotePDF(billySpain, creditNote);
+	}
+
+	private void createSeries(String series, ESBusiness business, String uniqueCode) {
+		InvoiceSeriesEntity entity = new JPAInvoiceSeriesEntity();
+		entity.setBusiness(business);
+		entity.setSeries(series);
+		entity.setSeriesUniqueCode(uniqueCode);
+		DAOInvoiceSeries daoInvoiceSeries = injector.getInstance(DAOInvoiceSeries.class);
+		daoInvoiceSeries.create(entity);
 	}
 
 	private ESTax createFlatTax(BillySpain billySpain) {
