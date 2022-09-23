@@ -1,8 +1,10 @@
 package dummyApp.persistence;
 
 import com.google.inject.Injector;
+import com.premiumminds.billy.core.exceptions.SeriesUniqueCodeNotFilled;
 import com.premiumminds.billy.core.services.UID;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
+import com.premiumminds.billy.core.services.exceptions.DocumentSeriesDoesNotExistException;
 import com.premiumminds.billy.gin.services.exceptions.ExportServiceException;
 import com.premiumminds.billy.portugal.BillyPortugal;
 import com.premiumminds.billy.portugal.services.documents.util.PTIssuingParams;
@@ -57,17 +59,17 @@ public class Billy {
 	}
 
 	public void issueInvoice(PTInvoice.Builder invoice, PTIssuingParams params)
-			throws DocumentIssuingException {
+			throws DocumentIssuingException, SeriesUniqueCodeNotFilled, DocumentSeriesDoesNotExistException {
 		billyPortugal.invoices().issue(invoice, params);
 	}
 
 	public void issueSimpleInvoice(PTSimpleInvoice.Builder simpleInvoice,
-			PTIssuingParams params) throws DocumentIssuingException {
+			PTIssuingParams params) throws DocumentIssuingException, SeriesUniqueCodeNotFilled, DocumentSeriesDoesNotExistException {
 		billyPortugal.simpleInvoices().issue(simpleInvoice, params);
 	}
 
 	public void issueCreditNote(PTCreditNote.Builder creditNote,
-			PTIssuingParams params) throws DocumentIssuingException {
+			PTIssuingParams params) throws DocumentIssuingException, SeriesUniqueCodeNotFilled, DocumentSeriesDoesNotExistException {
 		billyPortugal.creditNotes().issue(creditNote, params);
 	}
 

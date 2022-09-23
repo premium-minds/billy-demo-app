@@ -14,12 +14,14 @@ import java.util.Currency;
 import java.util.Date;
 
 import com.google.inject.Injector;
+import com.premiumminds.billy.core.exceptions.SeriesUniqueCodeNotFilled;
 import com.premiumminds.billy.core.persistence.dao.DAOInvoiceSeries;
 import com.premiumminds.billy.core.persistence.entities.InvoiceSeriesEntity;
 import com.premiumminds.billy.core.services.builders.GenericInvoiceEntryBuilder;
 import com.premiumminds.billy.core.services.entities.Product;
 import com.premiumminds.billy.core.services.entities.Tax;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
+import com.premiumminds.billy.core.services.exceptions.DocumentSeriesDoesNotExistException;
 import com.premiumminds.billy.gin.services.exceptions.ExportServiceException;
 import com.premiumminds.billy.persistence.entities.jpa.JPAInvoiceSeriesEntity;
 import com.premiumminds.billy.portugal.BillyPortugal;
@@ -53,11 +55,11 @@ public class PortugalDemoApp {
 	}
 
 	public void run()
-            throws IOException,
-            ParseException,
-            DocumentIssuingException,
-            SAFTPTExportException,
-            ExportServiceException {
+			throws IOException,
+			ParseException,
+			DocumentIssuingException,
+			SAFTPTExportException,
+			ExportServiceException, SeriesUniqueCodeNotFilled, DocumentSeriesDoesNotExistException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 		BillyPortugal billyPortugal = new BillyPortugal(injector);
@@ -171,7 +173,7 @@ public class PortugalDemoApp {
                                       PTCustomer customer,
                                       PTProduct product,
                                       PTProduct productExempt,
-									  PTProduct productTax) throws ParseException, DocumentIssuingException {
+									  PTProduct productTax) throws ParseException, DocumentIssuingException, SeriesUniqueCodeNotFilled, DocumentSeriesDoesNotExistException {
 		PTInvoice.Builder invoiceBuilder = billyPortugal.invoices().builder();
 
 		Date invoiceDate = dateFormat.parse("01-03-2013");
@@ -236,7 +238,7 @@ public class PortugalDemoApp {
                                             PTIssuingParams invoiceParameters,
                                             PTCustomer customer,
                                             PTProduct product,
-                                            PTInvoice invoice) throws ParseException, DocumentIssuingException {
+                                            PTInvoice invoice) throws ParseException, DocumentIssuingException, SeriesUniqueCodeNotFilled, DocumentSeriesDoesNotExistException {
 		PTCreditNote.Builder creditNoteBuilder = billyPortugal.creditNotes().builder();
 
 		Date creditNoteDate = dateFormat.parse("01-03-2013");

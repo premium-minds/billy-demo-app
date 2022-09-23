@@ -1,5 +1,7 @@
 package dummyApp.app;
 
+import com.premiumminds.billy.core.exceptions.SeriesUniqueCodeNotFilled;
+import com.premiumminds.billy.core.services.exceptions.DocumentSeriesDoesNotExistException;
 import com.premiumminds.billy.core.util.PaymentMechanism;
 import java.io.IOException;
 import java.io.InputStream;
@@ -217,6 +219,8 @@ public class AppManager {
 			billy.issueInvoice(builder, parameters);
 		} catch (DocumentIssuingException e) {
 			e.printStackTrace();
+		} catch (SeriesUniqueCodeNotFilled | DocumentSeriesDoesNotExistException e) {
+			throw new RuntimeException(e);
 		}
 
 		return (PTInvoiceEntity) builder.build();
@@ -241,7 +245,7 @@ public class AppManager {
 		parameters.setInvoiceSeries("SIMPLE");
 		try {
 			billy.issueSimpleInvoice(builder, parameters);
-		} catch (DocumentIssuingException e) {
+		} catch (DocumentIssuingException | SeriesUniqueCodeNotFilled | DocumentSeriesDoesNotExistException e) {
 			e.printStackTrace();
 		}
 
@@ -282,7 +286,7 @@ public class AppManager {
 		parameters.setInvoiceSeries("CREDIT");
 		try {
 			billy.issueCreditNote(builder, parameters);
-		} catch (DocumentIssuingException e) {
+		} catch (DocumentIssuingException | SeriesUniqueCodeNotFilled | DocumentSeriesDoesNotExistException e) {
 			e.printStackTrace();
 		}
 		return (PTCreditNoteEntity) builder.build();

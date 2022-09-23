@@ -12,12 +12,14 @@ import java.util.Currency;
 import java.util.Date;
 
 import com.google.inject.Injector;
+import com.premiumminds.billy.core.exceptions.SeriesUniqueCodeNotFilled;
 import com.premiumminds.billy.core.persistence.dao.DAOInvoiceSeries;
 import com.premiumminds.billy.core.persistence.entities.InvoiceSeriesEntity;
 import com.premiumminds.billy.core.services.builders.GenericInvoiceEntryBuilder;
 import com.premiumminds.billy.core.services.entities.Product;
 import com.premiumminds.billy.core.services.entities.Tax;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
+import com.premiumminds.billy.core.services.exceptions.DocumentSeriesDoesNotExistException;
 import com.premiumminds.billy.core.util.PaymentMechanism;
 import com.premiumminds.billy.gin.services.exceptions.ExportServiceException;
 import com.premiumminds.billy.persistence.entities.jpa.JPAInvoiceSeriesEntity;
@@ -49,10 +51,10 @@ public class SpainDemoApp {
 	}
 
 	public void run()
-            throws IOException,
-            ParseException,
-            DocumentIssuingException,
-			ExportServiceException {
+			throws IOException,
+			ParseException,
+			DocumentIssuingException,
+			ExportServiceException, SeriesUniqueCodeNotFilled, DocumentSeriesDoesNotExistException {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
 		BillySpain billySpain = new BillySpain(injector);
@@ -155,7 +157,7 @@ public class SpainDemoApp {
 									  ESCustomer customer,
 									  ESProduct product,
 									  ESProduct productExempt,
-									  ESProduct productTax) throws ParseException, DocumentIssuingException {
+									  ESProduct productTax) throws ParseException, DocumentIssuingException, SeriesUniqueCodeNotFilled, DocumentSeriesDoesNotExistException {
 
 		Date invoiceDate = dateFormat.parse("01-03-2013");
 
@@ -229,7 +231,7 @@ public class SpainDemoApp {
 											ESIssuingParams invoiceParameters,
 											ESCustomer customer,
 											ESProduct product,
-											ESInvoice invoice) throws ParseException, DocumentIssuingException {
+											ESInvoice invoice) throws ParseException, DocumentIssuingException, SeriesUniqueCodeNotFilled, DocumentSeriesDoesNotExistException {
 		Date creditNoteDate = dateFormat.parse("01-03-2013");
 
 		final ESPayment.Builder paymentBuilder = billySpain
