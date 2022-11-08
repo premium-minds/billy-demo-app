@@ -158,7 +158,7 @@ public class AppManager {
 		PTContact.Builder contact = createContact("Premium Minds", "217817555");
 		try {
 			application.setDeveloperCompanyName("Premium Minds")
-					.setDeveloperCompanyTaxIdentifier("12345789")
+					.setDeveloperCompanyTaxIdentifier("12345789","PT")
 					.addContact(contact).setMainContact(contact)
 					.setSoftwareCertificationNumber(123).setName("Billy")
 					.setVersion("1.0")

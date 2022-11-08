@@ -126,7 +126,7 @@ public class PortugalDemoApp {
 
 		PTApplication.Builder applicationBuilder = billyPortugal.applications().builder();
 		applicationBuilder.setDeveloperCompanyName("Developer Company Name")
-				.setDeveloperCompanyTaxIdentifier("1000000001")
+				.setDeveloperCompanyTaxIdentifier("1000000001","PT")
 				.setSoftwareCertificationNumber(Billy.SOFTWARE_CERTIFICATION)
 				.setName("Billy")
 				.setVersion("1.0")
