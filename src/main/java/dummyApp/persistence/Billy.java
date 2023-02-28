@@ -1,8 +1,15 @@
 package dummyApp.persistence;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
+
 import com.google.inject.Injector;
 import com.premiumminds.billy.core.exceptions.SeriesUniqueCodeNotFilled;
-import com.premiumminds.billy.core.services.UID;
+import com.premiumminds.billy.core.services.StringID;
+import com.premiumminds.billy.core.services.entities.Application;
+import com.premiumminds.billy.core.services.entities.Business;
+import com.premiumminds.billy.core.services.entities.documents.GenericInvoice;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
 import com.premiumminds.billy.core.services.exceptions.DocumentSeriesDoesNotExistException;
 import com.premiumminds.billy.gin.services.exceptions.ExportServiceException;
@@ -22,11 +29,6 @@ import com.premiumminds.billy.portugal.services.export.pdf.invoice.PTInvoiceTemp
 import com.premiumminds.billy.portugal.services.export.pdf.simpleinvoice.PTSimpleInvoicePDFExportRequest;
 import com.premiumminds.billy.portugal.services.export.pdf.simpleinvoice.PTSimpleInvoiceTemplateBundle;
 import com.premiumminds.billy.portugal.services.export.saftpt.PTSAFTFileGenerator;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigInteger;
-import java.util.Date;
 
 public class Billy {
 
@@ -73,13 +75,13 @@ public class Billy {
 		billyPortugal.creditNotes().issue(creditNote, params);
 	}
 
-	public InputStream exportSaft(UID appUID, UID businessUID, Date from,
-			Date to) throws IOException, SAFTPTExportException {
+	public InputStream exportSaft(StringID<Application> appUID, StringID<Business> businessUID, Date from,
+								  Date to) throws IOException, SAFTPTExportException {
 		return billyPortugal.saft().export(appUID, businessUID, from, to,
 				PTSAFTFileGenerator.SAFTVersion.CURRENT);
 	}
 
-	public InputStream exportInvoicePDF(UID invoiceUID) throws ExportServiceException {
+	public InputStream exportInvoicePDF(StringID<GenericInvoice> invoiceUID) throws ExportServiceException {
 		InputStream xsl = this.getClass().getResourceAsStream(Billy.INVOICE_XSL_PATH);
 		PTInvoiceTemplateBundle bundle = new PTInvoiceTemplateBundle(
 				Billy.LOGO_PATH, xsl, SOFTWARE_CERTIFICATION.toString());
@@ -87,7 +89,7 @@ public class Billy {
 				new PTInvoicePDFExportRequest(invoiceUID, bundle, RESULT_PATH));
 	}
 
-	public InputStream exportSimpleInvoicePDF(UID simpleInvoiceUID) throws ExportServiceException {
+	public InputStream exportSimpleInvoicePDF(StringID<GenericInvoice> simpleInvoiceUID) throws ExportServiceException {
 		InputStream xsl = this.getClass().getResourceAsStream(Billy.SIMPLE_INVOICE_XSL_PATH);
 		PTSimpleInvoiceTemplateBundle bundle = new PTSimpleInvoiceTemplateBundle(
 				Billy.LOGO_PATH, xsl, SOFTWARE_CERTIFICATION.toString());
@@ -96,7 +98,7 @@ public class Billy {
 						RESULT_PATH));
 	}
 
-	public InputStream exportCreditNotePDF(UID invoiceUID) throws ExportServiceException {
+	public InputStream exportCreditNotePDF(StringID<GenericInvoice> invoiceUID) throws ExportServiceException {
 		InputStream xsl = this.getClass().getResourceAsStream(Billy.CREDIT_NOTE_XSL_PATH);
 		PTCreditNoteTemplateBundle bundle = new PTCreditNoteTemplateBundle(
 				Billy.LOGO_PATH, xsl, SOFTWARE_CERTIFICATION.toString());
