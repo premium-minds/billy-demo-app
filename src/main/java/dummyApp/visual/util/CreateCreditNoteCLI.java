@@ -114,7 +114,7 @@ public class CreateCreditNoteCLI {
 			}
 
 			PTCreditNoteEntry.Builder entry = manager.createCreditNoteEntry(
-					product, invoice.getUID().toString(), quantity, price,
+					product, invoice.getUID(), quantity, price,
 					reason);
 			PTPayment.Builder payment = manager.createPayment(price
 					.multiply(quantity));

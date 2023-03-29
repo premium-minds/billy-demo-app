@@ -4,9 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import com.premiumminds.billy.core.services.UID;
+import com.premiumminds.billy.core.services.StringID;
+import com.premiumminds.billy.core.services.entities.Tax;
 import com.premiumminds.billy.portugal.services.entities.PTProduct;
-
 import dummyApp.app.AppManager;
 
 public class CreateProductCLI {
@@ -52,7 +52,7 @@ public class CreateProductCLI {
 				System.out.println("IVA: " + iva);
 			}
 			
-			UID tax;
+			StringID<Tax> tax;
 			if(iva.equals("23")) {
 				tax = manager.getTaxes().continent().normal().getUID();
 			} else if(iva.equals("13")) {

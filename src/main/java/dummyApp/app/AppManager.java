@@ -1,8 +1,5 @@
 package dummyApp.app;
 
-import com.premiumminds.billy.core.exceptions.SeriesUniqueCodeNotFilled;
-import com.premiumminds.billy.core.services.exceptions.DocumentSeriesDoesNotExistException;
-import com.premiumminds.billy.core.util.PaymentMechanism;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -14,10 +11,15 @@ import java.util.List;
 
 import com.google.inject.Injector;
 import com.premiumminds.billy.core.exceptions.BillyRuntimeException;
-import com.premiumminds.billy.core.services.UID;
+import com.premiumminds.billy.core.exceptions.SeriesUniqueCodeNotFilled;
+import com.premiumminds.billy.core.services.StringID;
 import com.premiumminds.billy.core.services.builders.GenericInvoiceEntryBuilder.AmountType;
 import com.premiumminds.billy.core.services.entities.Product.ProductType;
+import com.premiumminds.billy.core.services.entities.Tax;
+import com.premiumminds.billy.core.services.entities.documents.GenericInvoice;
 import com.premiumminds.billy.core.services.exceptions.DocumentIssuingException;
+import com.premiumminds.billy.core.services.exceptions.DocumentSeriesDoesNotExistException;
+import com.premiumminds.billy.core.util.PaymentMechanism;
 import com.premiumminds.billy.portugal.BillyPortugal;
 import com.premiumminds.billy.portugal.persistence.entities.PTBusinessEntity;
 import com.premiumminds.billy.portugal.persistence.entities.PTCreditNoteEntity;
@@ -44,7 +46,6 @@ import com.premiumminds.billy.portugal.services.entities.PTSimpleInvoice.CLIENTT
 import com.premiumminds.billy.portugal.services.export.exceptions.SAFTPTExportException;
 import com.premiumminds.billy.portugal.util.KeyGenerator;
 import com.premiumminds.billy.portugal.util.Taxes;
-
 import dummyApp.persistence.Billy;
 import dummyApp.visual.DummyAppCLI;
 
@@ -170,7 +171,7 @@ public class AppManager {
 	}
 
 	public PTProductEntity createProduct(String productCode,
-			String description, String unitOfMeasure, UID tax) {
+			String description, String unitOfMeasure, StringID<Tax> tax) {
 		PTProduct.Builder builder = billyPortugal.products().builder();
 
 		builder.setDescription(description).setNumberCode(productCode)
@@ -253,7 +254,7 @@ public class AppManager {
 	}
 
 	public PTCreditNoteEntry.Builder createCreditNoteEntry(
-			PTProductEntity product, String documentUID, BigDecimal quantity,
+			PTProductEntity product, StringID<GenericInvoice> documentUID, BigDecimal quantity,
 			BigDecimal unitAmount, String reason) throws BillyRuntimeException{
 		PTCreditNoteEntry.Builder builder = billyPortugal.creditNotes()
 				.entryBuilder();
@@ -265,7 +266,7 @@ public class AppManager {
 				.setCurrency(Currency.getInstance("EUR")).setQuantity(quantity)
 				.setDescription(product.getDescription())
 				.setProductUID(product.getUID()).setReason(reason)
-				.setReferenceUID(new UID(documentUID))
+				.setReferenceUID(documentUID)
 				.setUnitAmount(AmountType.WITH_TAX, unitAmount)
 				.setUnitOfMeasure(product.getUnitOfMeasure())
 				.setTaxPointDate(new Date());
@@ -306,7 +307,7 @@ public class AppManager {
 				business.getUID(), from, to);
 	}
 
-	public InputStream exportInvoicePDF(UID invoiceUID) {
+	public InputStream exportInvoicePDF(StringID<GenericInvoice> invoiceUID) {
 		try {
 			return billy.exportInvoicePDF(invoiceUID);
 		} catch (Exception e) {
@@ -315,7 +316,7 @@ public class AppManager {
 		return null;
 	}
 
-	public InputStream exportSimpleInvoicePDF(UID simpleInvoiceUID) {
+	public InputStream exportSimpleInvoicePDF(StringID<GenericInvoice> simpleInvoiceUID) {
 		try {
 			return billy.exportSimpleInvoicePDF(simpleInvoiceUID);
 		} catch (Exception e) {
@@ -324,7 +325,7 @@ public class AppManager {
 		return null;
 	}
 
-	public InputStream exportCreditNotePDF(UID creditNoteUID) {
+	public InputStream exportCreditNotePDF(StringID<GenericInvoice> creditNoteUID) {
 		try {
 			return billy.exportCreditNotePDF(creditNoteUID);
 		} catch (Exception e) {
