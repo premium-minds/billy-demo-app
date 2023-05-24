@@ -24,7 +24,7 @@ public class App {
 		SpainBootstrap.execute(injector);
 
 		if (args.length == 1 || (args.length == 2 && !args[0].equals("demo")) || args.length > 2){
-			System.out.println("Usage: [demo portugal|spain]");
+			usage();
 			return;
 		} else if(args.length == 2){
 			if (args[1].equals("portugal")){
@@ -33,6 +33,9 @@ public class App {
 			} else if (args[1].equals("spain")){
 				SpainDemoApp demo = new SpainDemoApp(injector);
 				demo.run();
+			} else {
+				System.out.println("unknown " + args[1]);
+				usage();
 			}
 		} else {
 			DummyAppCLI cli = new DummyAppCLI(injector);
@@ -40,5 +43,9 @@ public class App {
 		}
 
 		System.exit(0);
+	}
+
+	private static void usage() {
+		System.out.println("Usage: [demo portugal|spain]");
 	}
 }
