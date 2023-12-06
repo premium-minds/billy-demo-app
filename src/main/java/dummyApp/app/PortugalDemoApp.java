@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Currency;
 import java.util.Date;
 
@@ -161,7 +162,8 @@ public class PortugalDemoApp {
 				.setCommercialName("Business, INC")
 				.setFinancialID("500003564", "PT")
 				.setAddress(addressBuilder)
-				.setBillingAddress(addressBuilder);
+				.setBillingAddress(addressBuilder)
+				.setTimezone(ZoneId.of("Europe/Lisbon"));
 
 		return billyPortugal.businesses().persistence().create(businessBuilder);
 	}

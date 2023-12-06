@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Currency;
 import java.util.Date;
 
@@ -145,7 +146,8 @@ public class SpainDemoApp {
 				.setCommercialName("Business, INC")
 				.setFinancialID("A58250606", "ES")
 				.setAddress(addressBuilder)
-				.setBillingAddress(addressBuilder);
+				.setBillingAddress(addressBuilder)
+				.setTimezone(ZoneId.of("Europe/Madrid"));
 
 		return billySpain.businesses().persistence().create(businessBuilder);
 	}
