@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
         <hibernate.version>5.6.15.Final</hibernate.version>
-        <billy.version>9.4.0</billy.version>
+        <billy.version>9.5.0</billy.version>
     </properties>
 
     <dependencies>
